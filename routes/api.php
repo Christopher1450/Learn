@@ -6,6 +6,7 @@ use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\AnggotaController;
+use Illuminate\Http\Request;
 
 // Route::apiResource('books', BookController::class);
 Route::apiResource('categories', CategoryController::class);
@@ -17,3 +18,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 Route::apiResource('buku', BukuController::class);
 Route::apiResource('anggota', AnggotaController::class);
 
+// Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(function () {
+//     Route::get('/user', function (Request $request) {
+//         return $request->user();
+//     });
+// });

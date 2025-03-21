@@ -18,9 +18,10 @@ Route::get('/', function () {
 // Login Routes
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
-Route::post('/login', [LoginController::class, 'loginProcess'])
-    ->name('login.process')
-    ->middleware('throttle:5,1'); // rate limit 5 kali : 1 menit
+// Route::post('/login', [LoginController::class, 'loginProcess'])
+//     ->name('login.process')
+//     ->middleware('throttle:5,1'); // rate limit 5 kali : 1 menit
+Route::post('/login', [LoginController::class, 'loginProcess'])->name('login.process');
 
 
 // Dashboard
