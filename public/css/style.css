@@ -1,0 +1,85 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: #343a40;
+    padding: 10px 20px;
+    border-radius: 10px; /* Rounded navbar */
+}
+
+.navbar-brand {
+    color: white;
+    font-weight: bold;
+}
+
+/* CONTAINER */
+.container {
+    margin-top: 60px;
+}
+
+/* TABLE */
+.table {
+    background-color: white;
+    border-radius: 12px; /* Rounded table */
+    overflow: hidden; /* Ensures rounded corners work */
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* TABLE HEADER */
+.table thead {
+    background-color: #343a40;
+    color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+/* TABLE CELLS */
+.table th, .table td {
+    padding: 10px;
+    border-radius: 8px; /* Rounded table cells */
+}
+
+/* BADGES */
+.badge {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 8px; /* Rounded badges */
+}
+
+/* BUTTONS */
+.btn {
+    border-radius: 8px !important; /* Rounded buttons */
+}
+
+/* LOGOUT BUTTON */
+.logout-btn {
+    float: right;
+    margin-top: 8px;
+    border-radius: 8px; /* Rounded button */
+}
+
+/* STATISTICS CARDS */
+.stats-card {
+    padding: 15px;
+    border-radius: 12px; /* Rounded corners */
+    margin-bottom: 15px;
+}
+
+/* MODALS */
+.modal-content {
+    border-radius: 12px; /* Rounded modal */
+}
+
+.modal-header {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.modal-footer {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}

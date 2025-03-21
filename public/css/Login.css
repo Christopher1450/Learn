@@ -1,0 +1,63 @@
+/* BODY STYLES */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* LOGIN CONTAINER */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* FORM INPUT FIELDS */
+.form-control {
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+/* FORM BUTTON */
+.btn-dark {
+    background-color: #343a40;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-dark:hover {
+    background-color: #212529;
+}
+
+/* ALERT MESSAGES */
+.alert {
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* FORGOT PASSWORD LINK */
+.forgot-password {
+    display: block;
+    margin-top: 10px;
+    color: #343a40;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
