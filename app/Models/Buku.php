@@ -9,11 +9,11 @@ class Buku extends Model
 {
     use HasFactory;
 
-    protected $table = 'buku'; // Pastikan tabel sesuai dengan database
-    protected $primaryKey = 'id'; // id Prim
-    public $incrementing = true;  // id tidak auto-increment (karena tipe string)
-    protected $keyType = 'int'; // Pastikan kunci utama adalah string
-    public $timestamps = true;
+    protected $table = 'buku';
+    protected $primaryKey = 'id'; 
+    public $incrementing = true;
+    protected $keyType = 'int';
+    public $timestamps = false;
     public function sirkulasi()
 {
     return $this->hasMany(Sirkulasi::class, 'id_buku');
@@ -32,7 +32,7 @@ class Buku extends Model
         {
             parent::boot();
             static::creating(function ($model) {
-                $model->id_buku = (string) Str::id();
+                $model->id_buku = (string) Str::random(10);
             });
         }
 
@@ -51,13 +51,12 @@ class Buku extends Model
 
     public function peminjaman()
     {
-        return $this->hasMany(Peminjaman::class, 'id_buku'); // Sesuaikan jika ada tabel peminjaman
+        return $this->hasMany(Peminjaman::class, 'id_buku');
     }
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'buku_category', 'buku_id', 'category_id');
+        return $this->belongsToMany(Category::class, 'buku_category', 'id_buku', 'category_id');
     }
-    // public function category()
 // {
 //     return $this->belongsTo(Category::class, 'buku_category', 'buku_id', 'category_id');
 // }

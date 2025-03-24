@@ -6,6 +6,7 @@
     <title>Login - Laravel Perpustakaan</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/Login.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 
@@ -24,8 +25,10 @@
             </div>
         @endif
 
-        <form action="{{ route('login.process') }}" method="POST">
-            @csrf
+        <form method="POST" action="{{ route('login.process') }}">
+        @csrf
+        <p>Token: {{ csrf_token() }}</p>
+
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" name="email" class="form-control" required value="{{ old('email') }}">

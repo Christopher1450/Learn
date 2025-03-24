@@ -57,6 +57,7 @@
             <div class="d-flex align-items-center">
                 <!-- Dropdown Kategori -->
                 <form method="GET" action="{{ route('dashboard') }}" class="d-inline">
+                    @csrf
                     <select name="category_id" class="form-select d-inline w-auto" onchange="this.form.submit()">
                         <option value="" {{ request('category_id') == '' ? 'selected' : '' }}>All</option>
                         @foreach($categories as $category)

@@ -8,15 +8,15 @@ class CreateBukuTable extends Migration
     public function up()
     {
         Schema::create('buku', function (Blueprint $table) {
-            $table->string('id_buku')->primary();
+            $table->bigIncrements('id_buku')->primary();
             $table->string('judul_buku');
             $table->string('pengarang');
             $table->string('penerbit');
             $table->year('th_terbit');
-            $table->string('category_id');
+            // $table->string('category_id');
             $table->integer('stock');
         
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            // $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
             }
 

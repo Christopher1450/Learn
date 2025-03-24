@@ -10,7 +10,7 @@ class CategorySeeder extends Seeder
     public function run()
     {
         $categories = [
-            // General Book Categories
+            // Kategori normal
             ['name' => 'Science Fiction'],
             ['name' => 'Fantasy'],
             ['name' => 'Romance'],
@@ -35,7 +35,7 @@ class CategorySeeder extends Seeder
             ['name' => 'Graphic Novels'],
             ['name' => 'Light Novels'],
 
-            // Manhua & Manga Categories
+            // Kategori Manga
             ['name' => 'Reicarnated'],
             ['name' => 'Action'],
             ['name' => 'Time Travel'],
@@ -63,11 +63,19 @@ class CategorySeeder extends Seeder
             ['name' => 'Demons'],
             ['name' => 'Vampires'],
             ['name' => 'Zombies'],
-            ['name' => 'Tragedy'],  
+            ['name' => 'Tragedy'],
         ];
 
-        foreach ($categories as $category) {
-            Category::create($category);
-        }
+        // Hapus duplikat klo double 
+        $uniqueCategories = collect($categories)
+            ->unique('name')
+            ->values()
+            ->all();
+
+            Category::unguard();
+            foreach ($uniqueCategories as $category) {
+                Category::create([
+                    'name' => $category['name'],
+                ]);}
     }
 }

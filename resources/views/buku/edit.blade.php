@@ -25,7 +25,15 @@
 
         <div class="mb-3">
             <label for="th_terbit" class="form-label">Tahun Terbit</label>
-            <input type="number" name="th_terbit" id="th_terbit" class="form-control" value="{{ $buku->th_terbit }}" min="1900" max="{{ date('Y') }}" required>
+                <input 
+                type="text" 
+                name="th_terbit" 
+                id="th_terbit" 
+                class="form-control" 
+                maxlength="4"
+                pattern="\d{4}" 
+                title="Masukkan 4 digit tahun" 
+                required>
         </div>
 
         <div class="mb-3">

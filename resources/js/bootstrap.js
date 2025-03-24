@@ -1,4 +1,15 @@
 import axios from 'axios';
-window.axios = axios;
+axios.defaults.headers.common['X-CSRF-TOKEN'] =
+    document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        },
+        body: JSON.stringify({
+          email: 'test@example.com',
+          password: '123456'
+        })
+      });

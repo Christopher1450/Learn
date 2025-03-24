@@ -9,12 +9,12 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $table = 'categories'; // Nama tabel di database
-    protected $primaryKey = 'id'; // id utama
+    protected $table = 'categories'; // Nama tabel db
+    protected $primaryKey = 'id';
 
     protected $fillable = ['name'];
+    public $timestamps = false;
 
-    // 🔹 Relasi ke Buku (Satu kategori bisa punya banyak buku)
     public function books()
     {
         // return $this->hasMany(Buku::class, 'category_id');

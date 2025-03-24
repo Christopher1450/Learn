@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up()
     {
-    Schema::create('anggota', function (Blueprint $table) {
-        $table->id('id_anggota')->primary();
-        $table->string('nama');
-        // $table->string('kelas');
-        $table->string('no_hp')->unique();
-        $table->timestamps();
-    });
+        Schema::create('anggota', function (Blueprint $table) {
+            $table->id('id_anggota'); // ini sudah otomatis jadi primary key
+            $table->string('nama');
+            $table->string('no_hp')->unique();
+            $table->timestamps();
+        });
     }
 };

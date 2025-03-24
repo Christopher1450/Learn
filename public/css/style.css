@@ -6,8 +6,8 @@ body {
 /* NAVBAR */
 .navbar {
     background-color: #343a40;
-    padding: 10px 20px;
-    border-radius: 10px; /* Rounded navbar */
+    padding: 10px 5px;
+    /* border-radius: 10px; Rounded navbar */
 }
 
 .navbar-brand {
@@ -17,7 +17,7 @@ body {
 
 /* CONTAINER */
 .container {
-    margin-top: 60px;
+    margin-top: 10px;
 }
 
 /* TABLE */

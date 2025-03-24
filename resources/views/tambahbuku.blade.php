@@ -31,9 +31,17 @@
                 <input type="text" class="form-control" id="penerbit" name="penerbit" required>
             </div>
             <div class="mb-3">
-                <label for="th_terbit" class="form-label">Tahun Terbit</label>
-                <input type="number" class="form-control" id="th_terbit" name="th_terbit" required>
-            </div>
+            <label for="th_terbit" class="form-label">Tahun Terbit</label>
+                <input 
+                type="text" 
+                name="th_terbit" 
+                id="th_terbit" 
+                class="form-control" 
+                maxlength="4"
+                pattern="\d{4}" 
+                title="Masukkan 4 digit tahun" 
+                required>
+        </div>
             <div class="mb-3">
                 <label for="category_id" class="form-label">Kategori</label>
                 <select class="form-select" id="category_id" name="category_id" required>

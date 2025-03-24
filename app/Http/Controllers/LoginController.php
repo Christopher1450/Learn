@@ -27,6 +27,11 @@ class LoginController extends Controller
         return back()->withErrors(['login' => 'Email atau password salah'])->withInput();
     }
 
+//     public function loginProcess(Request $request)
+// {
+//     dd($request->all());
+// }
+
     public function logout(Request $request)
     {
         Auth::logout();
