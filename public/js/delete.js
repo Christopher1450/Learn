@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Attach click event to all delete buttons
     document.querySelectorAll("[data-bs-target='#confirmDeleteModal']").forEach((button) => {
         button.addEventListener("click", function () {
             const deleteUrl = this.getAttribute("data-url");
@@ -7,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Fetch and update statistics dynamically
+    // Fetch and update showbar stats
     fetch("/dashboard/stats")
         .then((response) => response.json())
         .then((data) => {

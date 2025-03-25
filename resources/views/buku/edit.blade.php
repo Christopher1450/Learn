@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-4">
+<div class="container" style="padding-top: 280px; padding-bottom: 10px;">
     <h2>Edit Buku</h2>
 
-    <form action="{{ route('buku.update', $buku->id) }}" method="POST">
+    <form action="{{ route('buku.update', $buku->id_buku) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -33,6 +33,7 @@
                 maxlength="4"
                 pattern="\d{4}" 
                 title="Masukkan 4 digit tahun" 
+                value="{{ $buku->th_terbit }}"
                 required>
         </div>
 
@@ -47,11 +48,11 @@
             <div class="border p-3 rounded bg-theme">
                 <div class="row">
                     @foreach ($categories as $category)
-                        <div class="col-md-3">
-                            <label class="d-flex align-items-center">
-                                <input type="checkbox" name="category_id[]" value="{{ $category->id }}" class="form-check-input"
+                        <div class="col-md-3 mb-2">
+                            <label class="form-check-label d-flex align-items-center" style="font-size: 0.9rem;">
+                                <input type="checkbox" name="category_id[]" value="{{ $category->id }}" class="form-check-input me-2"
                                     {{ $buku->categories->contains($category->id) ? 'checked' : '' }}>
-                                <span>{{ $category->name }}</span>
+                                {{ $category->name }}
                             </label>
                         </div>
                     @endforeach
@@ -59,8 +60,11 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+
+        <button type="submit" class="btn btn-success" >Simpan Perubahan</button>
         <a href="{{ route('dashboard') }}" class="btn btn-secondary">Batal</a>
+
+        <ul>DOne</ul>
     </form>
 </div>
 @endsection

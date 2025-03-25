@@ -8,7 +8,7 @@ class CreateBukuTable extends Migration
     public function up()
     {
         Schema::create('buku', function (Blueprint $table) {
-            $table->bigIncrements('id_buku')->primary();
+            $table->id('id_buku')->primary();
             $table->string('judul_buku');
             $table->string('pengarang');
             $table->string('penerbit');

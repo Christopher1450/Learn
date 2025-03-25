@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-    <!-- Load External JavaScript -->
     <script src="{{ asset('js/delete.js') }}" defer></script>
 </head>
 <body>
@@ -30,7 +28,6 @@
 
         <h2 class="mb-3">Selamat datang, {{ Auth::user()->name }}</h2>
 
-        <!-- Statistik Dashboard -->
         <div class="row">
             <div class="col-md-4">
                 <div class="bg-primary text-white stats-card">
@@ -55,7 +52,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Daftar Buku</h3>
             <div class="d-flex align-items-center">
-                <!-- Dropdown Kategori -->
+                <!-- Dropdown -->
                 <form method="GET" action="{{ route('dashboard') }}" class="d-inline">
                     @csrf
                     <select name="category_id" class="form-select d-inline w-auto" onchange="this.form.submit()">
@@ -68,14 +65,12 @@
                     </select>
                 </form>
 
-                <!-- Tombol Tambah Buku -->
                 @if(Auth::check() && strtolower(Auth::user()->role) === 'admin')
                     <a href="{{ route('buku.create') }}" class="btn btn-primary ms-3">Tambah Buku</a>
                 @endif
             </div>
         </div>
 
-        <!-- Tabel Daftar Buku -->
         <table class="table table-bordered shadow-sm">
             <thead>
                 <tr>
@@ -121,7 +116,6 @@
         </table>
     </div>
 
-    <!-- Modal Konfirmasi Delete -->
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -144,7 +138,7 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- JS -->
     <script>
         function setDeleteAction(action) {
             document.getElementById('deleteForm').setAttribute('action', action);
@@ -159,7 +153,6 @@
             });
     </script>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

@@ -9,6 +9,7 @@ use App\Models\Peminjaman;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BorrowingController;
 
 //Home Route
 Route::get('/', function () {
@@ -34,17 +35,21 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('dashboard.stats');
 
 // Peminjaman 
-Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index')->middleware('auth');
-Route::get('/peminjaman/create', [PeminjamanController::class, 'create'])->name('peminjaman.create')->middleware('auth');
-Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store')->middleware('auth');
-Route::resource('peminjaman', PeminjamanController::class)->middleware('auth');
-Route::post('/peminjaman/{id}/return', [PeminjamanController::class, 'returnBook'])->name('peminjaman.return')->middleware('auth');
+// Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index')->middleware('auth');
+// Route::get('/peminjaman/create', [PeminjamanController::class, 'create'])->name('peminjaman.create')->middleware('auth');
+// Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store')->middleware('auth');
+// Route::resource('peminjaman', PeminjamanController::class)->middleware('auth');
+// Route::post('/peminjaman/{id}/return', [PeminjamanController::class, 'returnBook'])->name('peminjaman.return')->middleware('auth');
+    Route::resource('peminjaman', BorrowingController::class)->middleware('auth');
+    Route::get('/peminjaman/create', [BorrowingController::class, 'create'])->name('peminjaman.create');
+    Route::post('/peminjaman/borrow/{buku}', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
+    Route::post('/peminjaman/borro', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
 
 
-// Mengelola Peminjaman Buku
-Route::get('/peminjaman/{id}/edit', [PeminjamanController::class, 'edit'])->name('peminjaman.edit')->middleware('auth');
-Route::put('/peminjaman/{id}', [PeminjamanController::class, 'update'])->name('peminjaman.update')->middleware('auth');
-Route::delete('/peminjaman/{id}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy')->middleware('auth');
+// // Mengelola Peminjaman Buku
+// Route::get('/peminjaman/{id}/edit', [PeminjamanController::class, 'edit'])->name('peminjaman.edit')->middleware('auth');
+// Route::put('/peminjaman/{id}', [PeminjamanController::class, 'update'])->name('peminjaman.update')->middleware('auth');
+// Route::delete('/peminjaman/{id}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy')->middleware('auth');
 
 // Form Peminjaman Buku
 Route::get('/pinjam', function () {

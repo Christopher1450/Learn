@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th>Buku</th>
-                <th>Nama Mahasiswa/Siswa</th>
+                <th>Nama</th>
                 <th>Tanggal Pinjam</th>
                 <th>Tanggal Kembali</th>
                 <th>Durasi Peminjaman</th>

@@ -10,7 +10,7 @@ class Buku extends Model
     use HasFactory;
 
     protected $table = 'buku';
-    protected $primaryKey = 'id'; 
+    protected $primaryKey = 'id_buku'; 
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = false;
@@ -32,22 +32,9 @@ class Buku extends Model
         {
             parent::boot();
             static::creating(function ($model) {
-                $model->id_buku = (string) Str::random(10);
+                $model->id_buku = (string) Str::uuid();
             });
         }
-
-    // protected static function boot()
-    // {
-    //     parent::boot();
-    //     static::creating(function ($model) {
-    //         $model->id_buku = Str::id();
-    //     });
-    // }
-    // Jika ada relasi ke kategori atau peminjaman, tambahkan di sini:
-    // public function category()
-    // {
-    //     return $this->belongsTo(Category::class, 'category_id'); // Sesuaikan nama kolom FK
-    // }
 
     public function peminjaman()
     {
@@ -57,7 +44,4 @@ class Buku extends Model
     {
         return $this->belongsToMany(Category::class, 'buku_category', 'id_buku', 'category_id');
     }
-// {
-//     return $this->belongsTo(Category::class, 'buku_category', 'buku_id', 'category_id');
-// }
 }
