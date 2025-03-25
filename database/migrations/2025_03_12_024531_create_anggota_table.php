@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('anggota', function (Blueprint $table) {
-            $table->id('id_anggota'); // ini sudah otomatis jadi primary key
+            $table->id('id_anggota');
             $table->string('nama');
             $table->string('no_hp')->unique();
             $table->timestamps();

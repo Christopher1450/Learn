@@ -18,13 +18,11 @@ class Peminjaman extends Model
         'denda'
     ];
 
-    // Relasi ke Buku
     public function buku()
     {
         return $this->belongsTo(Buku::class, 'buku_id', 'id_buku');
     }
 
-    // Relasi ke User
     public function user()
     {
         return $this->belongsTo(User::class, 'id', 'id');

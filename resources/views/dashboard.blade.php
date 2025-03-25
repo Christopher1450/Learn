@@ -51,8 +51,8 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Daftar Buku</h3>
-            <div class="d-flex align-items-center">
-                <!-- Dropdown -->
+            <div class="d-flex align-items-center gap-2">
+                <!-- Filter -->
                 <form method="GET" action="{{ route('dashboard') }}" class="d-inline">
                     @csrf
                     <select name="category_id" class="form-select d-inline w-auto" onchange="this.form.submit()">
@@ -65,11 +65,16 @@
                     </select>
                 </form>
 
+                <!-- Pinjam Buku -->
+                <a href="{{ route('peminjaman.create') }}" class="btn btn-warning">Pinjam Buku</a>
+
+                <!-- Tambah Buku (admin oly) -->
                 @if(Auth::check() && strtolower(Auth::user()->role) === 'admin')
-                    <a href="{{ route('buku.create') }}" class="btn btn-primary ms-3">Tambah Buku</a>
+                    <a href="{{ route('buku.create') }}" class="btn btn-primary">Tambah Buku</a>
                 @endif
             </div>
         </div>
+
 
         <table class="table table-bordered shadow-sm">
             <thead>
@@ -101,6 +106,7 @@
                     @if(Auth::user()->role === 'admin')
                         <td>
                             <a href="{{ route('buku.edit', $book->id_buku) }}" class="btn btn-warning">Edit</a>
+                            <!-- <a href="{{ route('peminjaman.create', $book->id_buku) }}" class="btn btn-primary btn-sm">Pinjam</a> -->
                             <button type="button" class="btn btn-danger btn-sm"
                             data-bs-toggle="modal" 
                             data-bs-target="#confirmDeleteModal"

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head> -->
 @extends('layouts.app')
-
+<div class="container" style="padding-top: 300px; padding-bottom: 10px;">
 @section('content')
 <div class="container mt-5" style="max-width: 800px;">
     <h2 class="mb-4 fw-bold text-center">Tambah Buku Baru</h2>
@@ -48,6 +48,10 @@
                 required>
         </div>
 
+        <div class="mb-3">
+            <label for="stock" class="form-label">Stok</label>
+            <input type="number" name="stock" id="stock" class="form-control" min="1" required>
+        </div>
 
         <div class="mb-3">
         <label for="category_id" class="form-label">Kategori <span class="text-danger">*</span></label>
@@ -65,15 +69,28 @@
         </div>
     </div>
 
-
-        <div class="mb-3">
-            <label for="stock" class="form-label">Stok</label>
-            <input type="number" name="stock" id="stock" class="form-control" min="1" required>
-        </div>
-
         <div class="text-end">
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>
     </form>
 </div>
 @endsection
+
+            <!-- buat estetik dikit Th_terbit kalau lebih dri max bisa hilang -->
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tahunInput = document.getElementById("th_terbit");
+
+            tahunInput.addEventListener("input", function () {
+                let value = tahunInput.value;
+
+                value = value.replace(/\D/g, "");
+
+                if (value.length > 4) {
+                    value = value.slice(-4);
+                }
+
+                tahunInput.value = value;
+            });
+        });
+        </script>

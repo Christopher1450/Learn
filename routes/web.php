@@ -11,12 +11,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BorrowingController;
 
-//Home Route
+//Home
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Login Routes
+// Login
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middleware('auth');
 // Route::post('/login', [LoginController::class, 'loginProcess'])

@@ -19,6 +19,8 @@ return new class extends Migration
         $table->date('borrow_date');
         $table->date('return_date');
         $table->date('returned_at')->nullable();
+
+        $table->timestamps();
     });    
         }
     }

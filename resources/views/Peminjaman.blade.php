@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PeminjamanController extends Controller
 {
-    // Show borrowing records 
+    // yg lg pinjem 
     public function index(Request $request)
     {
         if ($request->wantsJson()) {
@@ -20,14 +20,13 @@ class PeminjamanController extends Controller
         return view('peminjaman.index', compact('peminjaman'));
     }
 
-    // Show form to create a new borrowing
     public function create()
     {
         $buku = Buku::where('stock', '>', 0)->get();
         return view('peminjaman.create', compact('buku'));
     }
 
-    // Store new borrowing
+    // Store peminjaman
     public function store(Request $request)
     {
         $request->validate([
@@ -46,7 +45,7 @@ class PeminjamanController extends Controller
         return redirect()->route('peminjaman.index')->with('success', 'Peminjaman berhasil ditambahkan.');
     }
 
-    // Return book (update status)
+    // Return book 
     public function returnBook($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);

@@ -1,9 +1,10 @@
 @extends('layouts.app')
+<div class="container" style="padding-top: 300px; padding-bottom: 10px;">
 
 @section('content')
-<div class="container" style="padding-top: 280px; padding-bottom: 10px;">
-    <h2>Edit Buku</h2>
 
+    <h2 class="mb-4 fw-bold text-center">Edit Buku</h2>
+    <div class="container mt-5" style="max-width: 800px;">
     <form action="{{ route('buku.update', $buku->id_buku) }}" method="POST">
         @csrf
         @method('PUT')
@@ -68,3 +69,24 @@
     </form>
 </div>
 @endsection
+
+        <!-- estetika -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const tahunInput = document.getElementById("th_terbit");
+
+                tahunInput.addEventListener("input", function () {
+                    let value = tahunInput.value;
+
+                    // Hapus karakter yg bkn int
+                    value = value.replace(/\D/g, "");
+
+                    
+                    if (value.length > 4) {
+                        value = value.slice(-4);
+                    }
+
+                    tahunInput.value = value;
+                });
+            });
+        </script>

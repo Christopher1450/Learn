@@ -32,7 +32,7 @@ class Buku extends Model
         {
             parent::boot();
             static::creating(function ($model) {
-                $model->id_buku = (string) Str::uuid();
+                $model->id_buku = (string) Str::id();
             });
         }
 
