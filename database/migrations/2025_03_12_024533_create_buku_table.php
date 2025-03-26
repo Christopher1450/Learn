@@ -15,6 +15,8 @@ class CreateBukuTable extends Migration
             $table->year('th_terbit');
             // $table->string('category_id');
             $table->integer('stock');
+            $table->string('status')->default('available');
+
         
             // $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });

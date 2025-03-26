@@ -44,6 +44,8 @@ Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('das
     Route::get('/peminjaman/create', [BorrowingController::class, 'create'])->name('peminjaman.create');
     Route::post('/peminjaman/borrow/{buku}', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
     Route::post('/peminjaman/borro', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
+    Route::post('/peminjaman/return/{borrowing}', [BorrowingController::class, 'return'])->name('peminjaman.return');
+
 
 
 // // Mengelola Peminjaman Buku

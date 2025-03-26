@@ -107,7 +107,7 @@
                         <td>
                             <a href="{{ route('buku.edit', $book->id_buku) }}" class="btn btn-warning">Edit</a>
                             <!-- <a href="{{ route('peminjaman.create', $book->id_buku) }}" class="btn btn-primary btn-sm">Pinjam</a> -->
-                            <button type="button" class="btn btn-danger btn-sm"
+                            <button type="button" class="btn btn-danger"
                             data-bs-toggle="modal" 
                             data-bs-target="#confirmDeleteModal"
                             data-url="{{ route('buku.destroy', $book->id_buku) }}">
