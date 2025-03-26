@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+
 class Buku extends Model
 {
     use HasFactory;
 
     protected $table = 'buku';
     protected $primaryKey = 'id_buku'; 
-    public $incrementing = true;
+    public $incrementing = false;
     protected $keyType = 'int';
     public $timestamps = false;
     public function sirkulasi()
@@ -32,9 +33,22 @@ class Buku extends Model
         {
             parent::boot();
             static::creating(function ($model) {
-                $model->id_buku = (string) Str::id();
+                $model->id_buku = (string) Str::random(10);
             });
         }
+
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //     static::creating(function ($model) {
+    //         $model->id_buku = Str::id();
+    //     });
+    // }
+    // Jika ada relasi ke kategori atau peminjaman, tambahkan di sini:
+    // public function category()
+    // {
+    //     return $this->belongsTo(Category::class, 'category_id'); // Sesuaikan nama kolom FK
+    // }
 
     public function peminjaman()
     {

@@ -17,7 +17,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $categories = Category::orderBy('name', 'asc')->get();
-        $totalBuku = Buku::count(); // Fetch count directly
+        $totalBuku = Buku::count();
         $totalCategories = Category::count();
         $totalBorrowed = Borrowing::whereNull('returned_at')->count();
 

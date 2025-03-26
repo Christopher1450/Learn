@@ -9,7 +9,7 @@ class CreateBukuCategoryTable extends Migration
     public function up()
     {
         Schema::create('buku_category', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_buku');
+            $table->string('id_buku');
             $table->unsignedBigInteger('category_id');
         
             $table->foreign('id_buku')->references('id_buku')->on('buku')->onDelete('cascade');

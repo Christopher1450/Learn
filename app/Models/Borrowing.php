@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Borrowing extends Model
 {
@@ -40,7 +41,7 @@ class Borrowing extends Model
         $last = self::orderBy('id_borrowing', 'desc')->first();
 
         if (!$last) {
-            $model->id_borrowing = '001';
+            $model->id_borrowing = 'A001';
             return;
         }
 
@@ -65,7 +66,7 @@ class Borrowing extends Model
     });
 }
 
-    // Helper: increment A → B, Z → AA, AZ → BA, etc.
+    // increment A → B, Z → AA, AZ → BA
     protected static function incrementLetters($letters)
     {
         $length = strlen($letters);
