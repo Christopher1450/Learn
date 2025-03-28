@@ -29,6 +29,11 @@ class Borrowing extends Model
         return $this->belongsTo(Buku::class, 'id_buku', 'id_buku');
     }
 
+    public function borrower()
+    {
+        return $this->belongsTo(Borrower::class, 'borrower_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'id', 'id');

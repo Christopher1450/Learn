@@ -16,6 +16,7 @@ return new class extends Migration
         $table->string('id_borrowing')->primary();
         $table->string('id')->constrained('users')->onDelete('cascade');
         $table->string('id_buku')->constrained('buku')->onDelete('cascade');
+        $table->string('borrower_name')->nullable();
         $table->date('borrow_date');
         $table->date('return_date');
         $table->date('returned_at')->nullable();

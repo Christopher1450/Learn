@@ -7,42 +7,53 @@ use App\Models\Buku;
 use App\Models\Borrowing;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use App\Models\Borrower;
+
 
 class BorrowingController extends Controller
 {
     public function index()
     {
-        $borrowings = Borrowing::with(['buku', 'user'])->latest()->paginate(10);
+        $borrowings = Borrowing::with(['buku', 'user', 'borrower'])->latest()->paginate(10);
         return view('borrowing.index', compact('borrowings'));
     }
 
     public function create()
     {
-        $buku = Buku::where('stock', '>', 0)->get(); 
-        return view('borrowing.create', compact('buku'));
+        $buku = Buku::where('stock', '>', 0)->get();
+        $borrowers = Borrower::all(); // ambil dari tabel khusus peminjam 
+        return view('borrowing.create', compact('buku','borrowers'));
     }
 
     public function borrow(Buku $buku, Request $request)
-    {
-        if ($buku->stock <= 0) {
-            return back()->with('error', 'Stok buku habis');
-        }
-
-        Borrowing::create([
-            'id' => auth()->id(),
-            'id_buku' => $buku->id_buku,
-            'borrow_date' => now(),
-            'return_date' => now()->addDays(7),
-        ]);
-
-        $buku->decrement('stock');
-        if ($buku->stock <= 0) {
-            $buku->status = 'unavailable';
-            $buku->save();
-        }
-
-        return redirect()->route('peminjaman.index')->with('success', 'Buku berhasil dipinjam');
+{
+    if ($buku->stock <= 0) {
+        return back()->with('error', 'Stok buku habis');
     }
+
+    $borrower = Borrower::firstOrCreate([
+    'name' => $request->user_name, 
+    'date_of_birth' => $request->user_dob
+]);
+
+    
+Borrowing::create([
+    'id' => auth()->id(),
+    'id_buku' => $buku->id_buku,
+    'borrower_id' => $borrower->id,
+    'borrower_name' => $borrower->name,
+    'borrow_date' => now(),
+    'return_date' => now()->addDays(7),
+]);
+
+    $buku->decrement('stock');
+    if ($buku->stock <= 0) {
+        $buku->status = 'unavailable';
+        $buku->save();
+    }
+
+    return redirect()->route('peminjaman.index')->with('success', 'Buku berhasil dipinjam');
+}
 
     public function return($id)
     {
@@ -101,6 +112,26 @@ class BorrowingController extends Controller
             ->get();
 
         return response()->json(['data' => $borrows]);
+    }
+
+    public function edit($id)
+    {
+        $borrowing = Borrowing::findOrFail($id);
+        return view('borrowing.edit', compact('borrowing'));
+    }
+
+    // Update data
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'borrower_name' => 'required|string|max:255',
+        ]);
+
+        $borrowing = Borrowing::findOrFail($id);
+        $borrowing->borrower_name = $request->input('borrower_name');
+        $borrowing->save();
+
+        return redirect()->route('peminjaman.index')->with('success', 'Nama peminjam berhasil diperbarui.');
     }
 
     public function destroy($id)

@@ -13,12 +13,39 @@
     @endif
 
     <form action="{{ route('peminjaman.borrow', ['buku' => old('id_buku')]) }}" method="POST" id="borrow-form">
-        @csrf
+    @csrf
+
+    <div class="form-group mb-3">
+        <label for="borrower_select" class="form-label">Nama Peminjam:</label>
+        <select id="borrower_select" class="form-select" required>
+            <option value="">-- Pilih Nama --</option>
+            @foreach ($borrowers as $br)
+                <option value="{{ $br->name }}|{{ $br->date_of_birth }}">{{ $br->name }} ({{ $br->date_of_birth }})</option>
+            @endforeach
+            <option value="new">➕ Tambah Peminjam Baru</option>
+        </select>
+    </div>
+
+    <div id="new-borrower-fields" style="display: none;">
         <div class="form-group mb-3">
-            <label for="id_buku" class="form-label">Pilih Buku:</label>
-            <select name="id_buku" id="id_buku" class="form-select" required>
-                <option value="">-- Pilih Buku --</option>
-                @foreach ($buku as $b)
+            <label for="borrower_name" class="form-label">Nama Baru:</label>
+            <input type="text" name="borrower_name" id="borrower_name" class="form-control" placeholder="Nama lengkap">
+        </div>
+        <div class="form-group mb-3">
+            <label for="borrower_dob" class="form-label">Tanggal Lahir:</label>
+            <input type="date" name="borrower_dob" id="borrower_dob" class="form-control">
+        </div>
+    </div>
+
+    <input type="hidden" name="user_name" id="user_name">
+<input type="hidden" name="user_dob" id="user_dob">
+
+
+    <div class="form-group mb-3">
+        <label for="id_buku" class="form-label">Pilih Buku:</label>
+        <select name="id_buku" id="id_buku" class="form-select" required>
+            <option value="">-- Pilih Buku --</option>
+            @foreach ($buku as $b)
                 <option 
                     value="{{ $b->id_buku }}" 
                     data-judul="{{ $b->judul_buku }}" 
@@ -27,29 +54,31 @@
                     data-status="{{ $b->stock > 0 ? 'Available' : 'Not Available' }}">
                     {{ $b->judul_buku }} - {{ $b->categories->pluck('name')->implode(', ') ?: 'Tanpa Kategori' }} (Stok: {{ $b->stock }})
                 </option>
-                @endforeach
-            </select>
-        </div>
+            @endforeach
+        </select>
+    </div>
 
-        <div id="buku-info" class="card shadow-sm p-3 mb-3 bg-light" style="display: none;">
-            <h5 class="card-title mb-3">Informasi Buku</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Judul:</strong> <span id="info-judul"></span></p>
-                    <p><strong>Kategori:</strong> <span id="info-kategori"></span></p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Status:</strong> <span id="info-status" class="badge"></span></p>
-                    <p><strong>Stok:</strong> <span id="info-stok"></span></p>
-                </div>
+    <div id="buku-info" class="card shadow-sm p-3 mb-3 bg-light" style="display: none;">
+        <h5 class="card-title mb-3">Informasi Buku</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Judul:</strong> <span id="info-judul"></span></p>
+                <p><strong>Kategori:</strong> <span id="info-kategori"></span></p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Status:</strong> <span id="info-status" class="badge"></span></p>
+                <p><strong>Stok:</strong> <span id="info-stok"></span></p>
             </div>
         </div>
+    </div>
 
-        <button type="submit" class="btn btn-primary">Pinjam</button>
-    </form>
+    <button type="submit" class="btn btn-primary">Pinjam</button>
+</form>
+
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
     const select = document.getElementById('id_buku');
     const form = document.getElementById('borrow-form');
 
@@ -72,6 +101,33 @@
             document.getElementById('buku-info').style.display = 'none';
         }
     });
+
+    const borrowerSelect = document.getElementById('borrower_select');
+    const newFields = document.getElementById('new-borrower-fields');
+    const userName = document.getElementById('user_name');
+    const userDob = document.getElementById('user_dob');
+
+    borrowerSelect.addEventListener('change', function () {
+        const value = this.value;
+        if (value === "new") {
+            newFields.style.display = "block";
+            userName.value = "";
+            userDob.value = "";
+        } else {
+            newFields.style.display = "none";
+            const [name, dob] = value.split('|');
+            userName.value = name;
+            userDob.value = dob;
+        }
+    });
+
+    form.addEventListener('submit', function () {
+        if (borrowerSelect.value === "new") {
+            userName.value = document.getElementById('borrower_name').value;
+            userDob.value = document.getElementById('borrower_dob').value;
+        }
+    });
+});
 </script>
 
 @endsection
