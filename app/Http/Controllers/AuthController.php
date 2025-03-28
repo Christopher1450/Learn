@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -17,6 +18,23 @@ class AuthController extends Controller
         }
         return response()->json(['message' => 'Unauthorized'], 401);
     }
+
+    //tester 28/3/2025
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'dob' => 'required|date',
+        ]);
+    
+        $user = User::create([
+            'name' => $request->name,
+            'dob' => $request->dob,
+        ]);
+    
+        return response()->json($user);
+    }
+    
 
     public function logout()
     {

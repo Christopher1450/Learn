@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pengguna;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class PenggunaController extends Controller
 {
@@ -48,4 +49,22 @@ class PenggunaController extends Controller
         $request->user()->tokens()->delete();
         return response()->json(['message' => 'Logout berhasil'], 200);
     }
+    //Sementara Tester 28/3/2025
+    public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'dob' => 'required|date',
+    ]);
+
+    $user = User::create([
+        'name' => $request->name,
+        'dob' => $request->dob,
+        'email' => time().'@dummy.com', // pakai dummy
+        'password' => bcrypt('password'), // password dummy juga
+    ]);
+
+    return response()->json($user);
+}
+
 }

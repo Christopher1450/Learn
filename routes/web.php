@@ -10,6 +10,10 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BorrowingController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 //Home
 Route::get('/', function () {
@@ -45,6 +49,7 @@ Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('das
     Route::post('/peminjaman/borrow/{buku}', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
     Route::post('/peminjaman/borro', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
     Route::post('/peminjaman/return/{borrowing}', [BorrowingController::class, 'return'])->name('peminjaman.return');
+    Route::delete('/peminjaman/{id}', [BorrowingController::class, 'destroy'])->name('peminjaman.destroy');
 
 
 
@@ -64,3 +69,16 @@ Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
 Route::post('/buku', [BukuController::class, 'store'])->name('buku.store')->middleware('auth');
 Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->where('id', '[0-9a-fA-F-]+');
 Route::put('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
+
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
+
+Route::post('/users/store', function (Request $request) {
+    $user = User::create([
+        'name' => $request->name,
+        'birth_date' => $request->birth_date,
+    ]);
+
+    return response()->json($user);
+    })->name('users.store');

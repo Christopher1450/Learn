@@ -77,7 +77,7 @@
 @endsection
 
             <!-- buat estetik dikit Th_terbit kalau lebih dri max bisa hilang -->
-        <script>
+        <script defer>
         document.addEventListener("DOMContentLoaded", function () {
             const tahunInput = document.getElementById("th_terbit");
 

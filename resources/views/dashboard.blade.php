@@ -81,6 +81,7 @@
                 <tr>
                     <th>Judul Buku</th>
                     <th>Kategori</th>
+                    <th>Stock</th>
                     <th>Status</th>
                     @if(Auth::user()->role === 'admin')
                         <th>Action</th>
@@ -98,6 +99,7 @@
                             Tidak Ada Kategori
                         @endif
                     </td>
+                    <td>{{ $book->stock }}</td>
                     <td>
                         <span class="badge {{ $book->stock > 0 ? 'bg-success' : 'bg-danger' }}">
                             {{ $book->stock > 0 ? 'Available' : 'Not Available' }}
