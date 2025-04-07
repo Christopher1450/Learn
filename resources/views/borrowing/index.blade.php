@@ -3,7 +3,9 @@
 @endphp
 
 @extends('layouts.app')
-
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 @section('content')
 <div class="container">
     <h2 class="mb-3">List Peminjaman Buku</h2>
@@ -78,7 +80,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="5" class="text-end fw-bold">Total</td>
+            <td colspan="6" class="text-end fw-bold">Total</td>
             <td>Rp {{ number_format($borrowings->sum('fee'), 0, ',', '.') }}</td>
             <td class="text-danger fw-bold">Rp {{ number_format($borrowings->sum('penalty'), 0, ',', '.') }}</td>
             <td></td>
@@ -92,3 +94,28 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+<!-- jQuery + DataTables JS buat layout -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.table').DataTable({
+            paging: true,
+            ordering: true,
+            info: true,
+            destroy: true,
+            language: {
+                search: "Cari:",
+                lengthMenu: "Tampilkan _MENU_ entri",
+                info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ entri",
+                paginate: {
+                    previous: "Sebelumnya",
+                    next: "Berikutnya"
+                }
+            }
+        });
+    });
+</script>
+@endpush

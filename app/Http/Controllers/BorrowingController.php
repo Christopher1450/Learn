@@ -21,7 +21,7 @@ class BorrowingController extends Controller
     public function create()
     {
         $buku = Buku::where('stock', '>', 0)->get();
-        $borrowers = Borrower::all(); // ambil dari tabel khusus peminjam 
+        $borrowers = \App\Models\Borrower::all();; // ambil dari tabel khusus peminjam 
         return view('borrowing.create', compact('buku','borrowers'));
     }
 
@@ -38,6 +38,7 @@ class BorrowingController extends Controller
 
     
 Borrowing::create([
+    // 'id_borrowing' => Str::uuid(),
     'id' => auth()->id(),
     'id_buku' => $buku->id_buku,
     'borrower_id' => $borrower->id,
@@ -53,6 +54,42 @@ Borrowing::create([
     }
 
     return redirect()->route('peminjaman.index')->with('success', 'Buku berhasil dipinjam');
+}
+public function store(Request $request)
+{
+    $request->validate([
+        'borrower_name' => 'required|string|max:255',
+        'borrower_dob' => 'required|date',
+        'id_buku' => 'required|exists:buku,id_buku',
+    ]);
+
+    $buku = \App\Models\Buku::findOrFail($request->id_buku);
+
+    if ($buku->stock <= 0) {
+        return back()->with('error', 'Stok buku habis');
+    }
+
+    $borrower = \App\Models\Borrower::firstOrCreate([
+        'name' => $request->borrower_name,
+        'date_of_birth' => $request->borrower_dob,
+    ]);
+
+    Borrowing::create([
+        'id' => auth()->id(),
+        'id_buku' => $buku->id_buku,
+        'borrower_id' => $borrower->id,
+        'borrower_name' => $borrower->name,
+        'borrow_date' => now(),
+        'return_date' => now()->addDays(7),
+    ]);
+
+    $buku->decrement('stock');
+    if ($buku->stock <= 0) {
+        $buku->status = 'unavailable';
+        $buku->save();
+    }
+
+    return redirect()->route('peminjaman.index')->with('success', 'Buku berhasil dipinjam.');
 }
 
     public function return($id)

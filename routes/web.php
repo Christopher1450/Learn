@@ -47,7 +47,7 @@ Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('das
     Route::resource('peminjaman', BorrowingController::class)->middleware('auth');
     Route::get('/peminjaman/create', [BorrowingController::class, 'create'])->name('peminjaman.create');
     Route::post('/peminjaman/borrow/{buku}', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
-    Route::post('/peminjaman/borro', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
+    Route::post('/peminjaman/borrow', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
     Route::post('/peminjaman/return/{borrowing}', [BorrowingController::class, 'return'])->name('peminjaman.return');
     Route::delete('/peminjaman/{id}', [BorrowingController::class, 'destroy'])->name('peminjaman.destroy');
 
@@ -64,11 +64,12 @@ Route::get('/pinjam', function () {
 })->name('pinjam.form')->middleware('auth');
 Route::post('/sirkulasi/pinjam', [SirkulasiController::class, 'pinjam'])->name('sirkulasi.pinjam')->middleware('auth');
 
-Route::get('/buku/create', [BukuController::class, 'create'])->name('buku.create')->middleware('auth');
-Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
-Route::post('/buku', [BukuController::class, 'store'])->name('buku.store')->middleware('auth');
-Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->where('id', '[0-9a-fA-F-]+');
-Route::put('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
+// Route::get('/buku/create', [BukuController::class, 'create'])->name('buku.create')->middleware('auth');
+// Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
+// Route::post('/buku', [BukuController::class, 'store'])->name('buku.store')->middleware('auth');
+// Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->where('id', '[0-9a-fA-F-]+');
+// Route::put('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
+Route::resource('buku', BukuController::class)->middleware('auth');
 
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
 Route::post('/users', [UserController::class, 'store'])->name('users.store');

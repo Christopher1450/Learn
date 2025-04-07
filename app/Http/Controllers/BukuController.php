@@ -10,7 +10,7 @@ class BukuController extends Controller
 {
     public function index()
     {
-        $buku = Buku::with('category')->get();
+        $buku = Buku::with('categories')->get();
         return view('buku.index', compact('buku'));
     }
 
