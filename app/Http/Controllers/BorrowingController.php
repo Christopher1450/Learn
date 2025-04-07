@@ -38,14 +38,14 @@ class BorrowingController extends Controller
 
     
 Borrowing::create([
-    // 'id_borrowing' => Str::uuid(),
     'id' => auth()->id(),
     'id_buku' => $buku->id_buku,
-    'borrower_id' => $borrower->id,
-    'borrower_name' => $borrower->name,
+    'borrower_name' => $request->user_name,
+    'borrower_dob' => $request->user_dob,
     'borrow_date' => now(),
     'return_date' => now()->addDays(7),
 ]);
+
 
     $buku->decrement('stock');
     if ($buku->stock <= 0) {
@@ -153,7 +153,7 @@ public function store(Request $request)
 
     public function edit($id)
     {
-        $borrowing = Borrowing::findOrFail($id);
+$borrowings = Borrowing::with(['buku', 'user'])->get();
         return view('borrowing.edit', compact('borrowing'));
     }
 

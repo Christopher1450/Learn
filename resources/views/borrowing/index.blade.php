@@ -12,7 +12,7 @@
 
     <h2 class="mb-3">List Peminjaman Buku</h2>
 
-    <a href="{{ route('peminjaman.create') }}" class="btn btn-primary mb-3">Buat Peminjaman Baru</a>
+    <!-- <a href="{{ route('peminjaman.create') }}" class="btn btn-primary mb-3">Buat Peminjaman Baru</a> -->
 
     <table class="table table-bordered shadow-sm">
         <thead>
@@ -34,9 +34,12 @@
         <tr>
             <td>{{ $borrowing->buku->judul_buku }}</td>
             <td>{{ $borrowing->user->name }}</td>
-            <td>{{ $borrowing->borrower?->name }}</td>
-            <td>{{ $borrowing->borrow_date ? \Carbon\Carbon::parse($borrowing->borrow_date)->format('Y-m-d') : '-' }}</td>
-            <td>{{ $borrowing->returned_at ? \Carbon\Carbon::parse($borrowing->returned_at)->format('Y-m-d') : '-' }}</td>
+            <td>{{ $borrowing->borrower_name }}</td>
+            <!-- <td>{{ $borrowing->borrow_date ? \Carbon\Carbon::parse($borrowing->borrow_date)->format('Y-m-d') : '-' }}</td>
+            <td>{{ $borrowing->returned_at ? \Carbon\Carbon::parse($borrowing->returned_at)->format('Y-m-d') : '-' }}</td> -->
+            <td>{{ $borrowing->borrower_name ?? 'N/A' }}</td>
+            <td>{{ $borrowing->borrower_dob ?? 'N/A' }}</td>
+
             <td>
                 @php
                     $durasi = Carbon::parse($borrowing->borrow_date)->diffInDays(Carbon::parse($borrowing->return_date));

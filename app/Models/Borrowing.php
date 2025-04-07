@@ -16,23 +16,26 @@ class Borrowing extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id_borrowing', //prim
-        'id', // user
+        'id_borrowing',
+        'id',
         'id_buku',
+        'borrower_name',
+        'borrower_dob',
         'borrow_date',
         'return_date',
-        'returned_at'
+        'returned_at',
     ];
+    
 
     public function buku()
     {
         return $this->belongsTo(Buku::class, 'id_buku', 'id_buku');
     }
 
-    public function borrower()
-    {
-        return $this->belongsTo(Borrower::class, 'borrower_id');
-    }
+    // public function borrower()
+    // {
+    //     return $this->belongsTo(Borrower::class, 'borrower_id');
+    // }
 
     public function user()
     {

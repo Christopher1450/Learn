@@ -9,6 +9,34 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @stack('scripts')
 </head>
+<!-- pop Tambah Peminjam -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{{ route('users.store') }}" method="POST">
+      @csrf
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tambah Peminjam</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="name" class="form-label">Nama</label>
+            <input type="text" name="name" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="birth_date" class="form-label">Tanggal Lahir</label>
+            <input type="date" name="birth_date" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 <body>
     <!-- nav -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
@@ -22,10 +50,11 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('peminjaman.create') }}">Buat Peminjaman</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('buku.create') }}">Tambah Buku</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('peminjaman.store') }}">Daftar Pinjam</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#addUserModal">Tambah Peminjam</a></li>
                 </ul>
             </div> 
 
-            {{-- Logout kanan atas --}}
+            {{-- Logout --}}
             <div class="d-flex ms-auto">
                 <a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
             </div>
@@ -76,7 +105,7 @@
         <span class="ms-3">Loading...</span>
     </div>
 
-        <!-- Modal Tambah User -->
+        <!-- Modal Tambah User
     <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <form action="{{ route('users.store') }}" method="POST">
@@ -102,7 +131,7 @@
             </div>
         </form>
     </div>
-    </div>
+    </div> -->
 
 
     <script>
