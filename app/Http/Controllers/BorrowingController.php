@@ -41,7 +41,7 @@ Borrowing::create([
     'id' => auth()->id(),
     'id_buku' => $buku->id_buku,
     'borrower_name' => $request->user_name,
-    'borrower_dob' => $request->user_dob,
+    // 'borrower_dob' => $request->user_dob,
     'borrow_date' => now(),
     'return_date' => now()->addDays(7),
 ]);
@@ -153,7 +153,7 @@ public function store(Request $request)
 
     public function edit($id)
     {
-$borrowings = Borrowing::with(['buku', 'user'])->get();
+$borrowings = Borrowing::with(['buku', 'user','borrower'])->get();
         return view('borrowing.edit', compact('borrowing'));
     }
 
