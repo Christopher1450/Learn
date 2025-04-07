@@ -7,7 +7,9 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 @section('content')
-<div class="container">
+<div class="container" style="margin-top: 250px;"><div class="container" style="margin-bottom: 25px;">
+
+
     <h2 class="mb-3">List Peminjaman Buku</h2>
 
     <a href="{{ route('peminjaman.create') }}" class="btn btn-primary mb-3">Buat Peminjaman Baru</a>
@@ -32,7 +34,7 @@
         <tr>
             <td>{{ $borrowing->buku->judul_buku }}</td>
             <td>{{ $borrowing->user->name }}</td>
-            <td>{{ $borrowing->borrower?->borrower_name }}</td>
+            <td>{{ $borrowing->borrower?->name }}</td>
             <td>{{ $borrowing->borrow_date ? \Carbon\Carbon::parse($borrowing->borrow_date)->format('Y-m-d') : '-' }}</td>
             <td>{{ $borrowing->returned_at ? \Carbon\Carbon::parse($borrowing->returned_at)->format('Y-m-d') : '-' }}</td>
             <td>
@@ -89,9 +91,9 @@
 
     </table>
 
-    <div class="d-flex justify-content-end">
+    <!-- <div class="d-flex justify-content-end">
         {{ $borrowings->links() }}
-    </div>
+    </div> -->
 </div>
 @endsection
 @push('scripts')
@@ -110,10 +112,7 @@
                 search: "Cari:",
                 lengthMenu: "Tampilkan _MENU_ entri",
                 info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ entri",
-                paginate: {
-                    previous: "Sebelumnya",
-                    next: "Berikutnya"
-                }
+                
             }
         });
     });

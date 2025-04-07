@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Borrower;
 
 //Home
 Route::get('/', function () {
@@ -76,10 +77,10 @@ Route::post('/users', [UserController::class, 'store'])->name('users.store');
 Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
 
 Route::post('/users/store', function (Request $request) {
-    $user = User::create([
+    $borrower = Borrower::create([
         'name' => $request->name,
-        'birth_date' => $request->birth_date,
+        'date_of_birth' => $request->birth_date,
     ]);
 
-    return response()->json($user);
-    })->name('users.store');
+    return response()->json($borrower); // bisa diganti redirect atau return view jika kamu mau
+})->name('users.store');

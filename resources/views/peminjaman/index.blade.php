@@ -22,7 +22,7 @@
             @foreach ($peminjaman as $pinjam)
             <tr>
                 <td>{{ $pinjam->buku->judul_buku }}</td>
-                <td>{{ $pinjam->user->name }}</td>
+                <td>{{ $pinjam->borrower->borrower_name }}</td>
                 <td>{{ $pinjam->tgl_pinjam }}</td>
                 <td>{{ $pinjam->tgl_kembali }}</td>
                 <td>
@@ -50,8 +50,5 @@
         </tbody>
     </table>
 
-    <div class="d-flex justify-content-end">
-        {{ $peminjaman->links() }}
-    </div>
 </div>
 @endsection

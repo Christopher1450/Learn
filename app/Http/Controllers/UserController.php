@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Borrower;
+use App\Models\Buku;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function create()
+    {
+        $borrowers = Borrower::all();
+        $buku = Buku::with('categories')->get();
+
+        return view('borrowing.create', compact('borrowers', 'buku'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -15,13 +23,11 @@ class UserController extends Controller
             'dob' => 'required|date',
         ]);
 
-        $user = User::create([
+        $user = Borrower::create([
             'name' => $request->name,
-            'dob' => $request->dob,
-            'email' => time().'@dummy.com', // Email dummy
-            'password' => Hash::make('password'), // Password dummy
+            'date_of_birth' => $request->dob,
         ]);
 
-        return response()->json($user);
+        return redirect()->route('dashboard')->with('success', 'Peminjam berhasil ditambahkan!');
     }
 }

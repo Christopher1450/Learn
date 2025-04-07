@@ -3,7 +3,7 @@
 
 <div class="container mt-4">
     <h2>Form Peminjaman Buku</h2>
-    <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary mb-3">Lihat Daftar Peminjaman</a>
+    <!-- <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary mb-3">Lihat Daftar Peminjaman</a> -->
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -15,7 +15,7 @@
     <form action="{{ route('peminjaman.borrow', ['buku' => old('id_buku')]) }}" method="POST" id="borrow-form">
     @csrf
 
-    <div class="form-group mb-3">
+    <!-- <div class="form-group mb-3">
         <label for="borrower_select" class="form-label">Nama Peminjam:</label>
         <select id="borrower_select" class="form-select" required>
             <option value="">-- Pilih Nama --</option>
@@ -24,7 +24,13 @@
             @endforeach
             <option value="new">➕ Tambah Peminjam Baru</option>
         </select>
+    </div> -->
+    <div class="form-group mb-3">
+    <label for="borrower_name_search" class="form-label">Nama Peminjam:</label>
+    <input type="text" id="borrower_name_search" class="form-control" placeholder="Ketik nama..." autocomplete="off">
+    <div id="borrower-suggestion" class="list-group mt-1" style="display: none; position: absolute; z-index: 10;"></div>
     </div>
+
 
     <div id="new-borrower-fields" style="display: none;">
         <div class="form-group mb-3">
@@ -38,7 +44,7 @@
     </div>
 
     <input type="hidden" name="user_name" id="user_name">
-<input type="hidden" name="user_dob" id="user_dob">
+    <input type="hidden" name="user_dob" id="user_dob">
 
 
     <div class="form-group mb-3">
@@ -125,6 +131,55 @@ document.addEventListener("DOMContentLoaded", function () {
         if (borrowerSelect.value === "new") {
             userName.value = document.getElementById('borrower_name').value;
             userDob.value = document.getElementById('borrower_dob').value;
+        }
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const borrowers = @json($borrowers);
+    const input = document.getElementById('borrower_name_search');
+    const suggestionBox = document.getElementById('borrower-suggestion');
+    const userName = document.getElementById('user_name');
+    const userDob = document.getElementById('user_dob');
+
+    input.addEventListener('input', function () {
+        const keyword = this.value.toLowerCase();
+        suggestionBox.innerHTML = '';
+
+        if (!keyword) {
+            suggestionBox.style.display = 'none';
+            return;
+        }
+
+        const filtered = borrowers.filter(b =>
+            b.name.toLowerCase().includes(keyword)
+        );
+
+        if (filtered.length === 0) {
+            suggestionBox.style.display = 'none';
+            return;
+        }
+
+        filtered.forEach(b => {
+            const item = document.createElement('button');
+            item.classList.add('list-group-item', 'list-group-item-action');
+            item.textContent = `${b.name} (${b.date_of_birth})`;
+            item.addEventListener('click', function () {
+                input.value = b.name;
+                userName.value = b.name;
+                userDob.value = b.date_of_birth;
+                suggestionBox.style.display = 'none';
+            });
+            suggestionBox.appendChild(item);
+        });
+
+        suggestionBox.style.display = 'block';
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!suggestionBox.contains(e.target) && e.target !== input) {
+            suggestionBox.style.display = 'none';
         }
     });
 });

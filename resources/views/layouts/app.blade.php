@@ -19,8 +19,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-3">
                     <li class="nav-item"><a class="nav-link" href="{{ route('dashboard') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('peminjaman.index') }}">Peminjaman</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('peminjaman.create') }}">Buat Peminjaman</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('buku.create') }}">Tambah Buku</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('peminjaman.store') }}">Daftar Pinjam</a></li>
                 </ul>
             </div> 
 
@@ -30,6 +31,35 @@
             </div>
         </div>
     </nav>
+
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="addUserForm">
+      @csrf
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addUserModalLabel">Tambah Peminjam Baru</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group mb-3">
+            <label for="new_name">Nama:</label>
+            <input type="text" id="new_name" name="name" class="form-control" required>
+          </div>
+          <div class="form-group mb-3">
+            <label for="new_birth_date">Tanggal Lahir:</label>
+            <input type="date" id="new_birth_date" name="birth_date" class="form-control" required>
+          </div>
+          <div id="addUserSuccess" class="alert alert-success d-none"></div>
+          <div id="addUserError" class="alert alert-danger d-none"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
     <div class="container mt-5 pt-5">
         @yield('content')
@@ -45,6 +75,35 @@
         <div class="spinner-border text-primary" role="status"></div>
         <span class="ms-3">Loading...</span>
     </div>
+
+        <!-- Modal Tambah User -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{{ route('users.store') }}" method="POST">
+            @csrf
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel">Tambah User Baru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nama</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="birth_date" class="form-label">Tanggal Lahir</label>
+                    <input type="date" name="birth_date" class="form-control" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+            </div>
+        </form>
+    </div>
+    </div>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -63,6 +122,48 @@
             });
         });
     </script>
+
+<!-- ajax -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById('addUserForm');
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById('new_name').value;
+        const birthDate = document.getElementById('new_birth_date').value;
+        const successEl = document.getElementById('addUserSuccess');
+        const errorEl = document.getElementById('addUserError');
+
+        fetch("{{ route('users.store') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({ name, birth_date: birthDate })
+        })
+        .then(res => res.json())
+        .then(data => {
+            successEl.textContent = 'Peminjam berhasil ditambahkan!';
+            successEl.classList.remove('d-none');
+            errorEl.classList.add('d-none');
+            form.reset();
+
+            setTimeout(() => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                modal.hide();
+                location.reload(); // Reload biar muncul di autocomplete
+            }, 1200);
+        })
+        .catch(() => {
+            errorEl.textContent = 'Gagal menambahkan peminjam.';
+            errorEl.classList.remove('d-none');
+        });
+    });
+});
+</script>
 
     @stack('scripts')
 </body>

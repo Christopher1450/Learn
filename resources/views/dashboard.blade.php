@@ -1,3 +1,4 @@
+@extends('layouts.app')
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -15,10 +16,10 @@
 
 
     <!-- Navbar -->
-    <nav class="navbar navbar-dark">
+    <!-- <nav class="navbar navbar-dark">
         <a class="navbar-brand" href="#">Laravel Perpustakaan</a>
         <a href="{{ route('logout') }}" class="btn btn-danger logout-btn">Logout</a>
-    </nav>
+    </nav> -->
 
     <div class="container">
         @if (session('success'))
@@ -67,12 +68,12 @@
                 </form>
 
                 <!-- Pinjam Buku -->
-                <a href="{{ route('peminjaman.create') }}" class="btn btn-warning">Pinjam Buku</a>
+                <!-- <a href="{{ route('peminjaman.create') }}" class="btn btn-warning">Pinjam Buku</a> -->
 
                 <!-- Tambah Buku (admin oly) -->
-                @if(Auth::check() && strtolower(Auth::user()->role) === 'admin')
+                <!-- @if(Auth::check() && strtolower(Auth::user()->role) === 'admin')
                     <a href="{{ route('buku.create') }}" class="btn btn-primary">Tambah Buku</a>
-                @endif
+                @endif -->
             </div>
         </div>
 
