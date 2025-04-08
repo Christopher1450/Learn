@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Borrower;
+use App\Http\Controllers\CategoryController;
 
 //Home
 Route::get('/', function () {
@@ -65,7 +66,7 @@ Route::get('/pinjam', function () {
 })->name('pinjam.form')->middleware('auth');
 Route::post('/sirkulasi/pinjam', [SirkulasiController::class, 'pinjam'])->name('sirkulasi.pinjam')->middleware('auth');
 
-// Route::get('/buku/create', [BukuController::class, 'create'])->name('buku.create')->middleware('auth');
+Route::get('/buku/create', [BukuController::class, 'create'])->name('buku.create')->middleware('auth');
 // Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
 // Route::post('/buku', [BukuController::class, 'store'])->name('buku.store')->middleware('auth');
 // Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->where('id', '[0-9a-fA-F-]+');
@@ -84,3 +85,9 @@ Route::post('/users/store', function (Request $request) {
 
     return response()->json($borrower); // bisa diganti redirect atau return view jika kamu mau
 })->name('users.store');
+
+Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+Route::post('/category', [CategoryController::class, 'store'])->name('category.store');
+Route::delete('/category/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
+Route::get('/category/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
+Route::put('/category/{category}', [CategoryController::class, 'update'])->name('category.update');

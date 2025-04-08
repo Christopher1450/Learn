@@ -14,14 +14,14 @@ class BorrowingController extends Controller
 {
     public function index()
     {
-        $borrowings = Borrowing::with(['buku', 'user', 'borrower'])->latest()->paginate(10);
+        $borrowings = Borrowing::with(['buku', 'user', 'borrower'])->latest()->paginate(100);
         return view('borrowing.index', compact('borrowings'));
     }
 
     public function create()
     {
         $buku = Buku::where('stock', '>', 0)->get();
-        $borrowers = \App\Models\Borrower::all();; // ambil dari tabel khusus peminjam 
+        $borrowers = \App\Models\Borrower::all();;
         return view('borrowing.create', compact('buku','borrowers'));
     }
 
@@ -41,6 +41,7 @@ Borrowing::create([
     'id' => auth()->id(),
     'id_buku' => $buku->id_buku,
     'borrower_name' => $request->user_name,
+    'borrower_id' => $borrower->id,
     // 'borrower_dob' => $request->user_dob,
     'borrow_date' => now(),
     'return_date' => now()->addDays(7),

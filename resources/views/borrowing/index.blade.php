@@ -1,7 +1,12 @@
 @php
     use Carbon\Carbon;
 @endphp
-
+<style>
+    .btn-sm {
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+    }
+</style>
 @extends('layouts.app')
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
@@ -66,20 +71,25 @@
                     <span class="badge bg-warning text-dark">Belum Dikembalikan</span>
                 @endif
             </td>
-            <td class="d-flex gap-2">
+            <td>
+            <div class="d-flex align-items-center gap-2">
                 @if (!$borrowing->isReturned())
-                    <form action="{{ route('peminjaman.return', $borrowing->id_borrowing) }}" method="POST">
+                    <form action="{{ route('peminjaman.return', $borrowing->id_borrowing) }}" method="POST" class="m-0">
                         @csrf
                         <button class="btn btn-sm btn-info" onclick="return confirm('Kembalikan buku ini?')">Kembalikan</button>
                     </form>
                 @endif
+
                 <a href="{{ route('peminjaman.edit', $borrowing->id_borrowing) }}" class="btn btn-success btn-sm">Edit</a>
-                <form action="{{ route('peminjaman.destroy', $borrowing->id_borrowing) }}" method="POST">
+
+                <form action="{{ route('peminjaman.destroy', $borrowing->id_borrowing) }}" method="POST" class="m-0">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Delete</button>
                 </form>
-            </td>
+            </div>
+        </td>
+
         </tr>
         @endforeach
     </tbody>
@@ -115,7 +125,15 @@
                 search: "Cari:",
                 lengthMenu: "Tampilkan _MENU_ entri",
                 info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ entri",
-                
+                infoEmpty: "Menampilkan 0 hingga 0 dari 0 entri",
+                infoFiltered: "(disaring dari _MAX_ total entri)",
+                zeroRecords: "Tidak ada entri yang ditemukan",
+                paginate: {
+                    first: "Pertama",
+                    last: "Terakhir",
+                    next: "Selanjutnya",
+                    previous: "Sebelumnya"
+                }
             }
         });
     });

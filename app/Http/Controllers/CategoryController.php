@@ -7,21 +7,48 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller {
 
-    public function index(){
-        return response()->json(Category::all());
+    public function index()
+    {
+        $categories = Category::orderBy('name')->get();
+        return view('category.index', compact('categories'));
+    }
+
+    public function showForm()
+    {
+        $categories = Category::all();
+        return view('category.index', compact('categories'));
     }
 
     public function store(Request $request){
-        $validated = $request->validate(['name' => 'required|string|max:255']);
+        $validated = $request->validate([
+            'name' => 'required|string|max:20'
+        ]);
+    
+        Category::create($validated);
+    
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil ditambahkan.');
+    }
+    
+    public function edit(Category $category)
+    {
+        return view('category.edit', compact('category'));
+    }
 
-        $category = Category::create($validated);
+    public function update(Request $request, Category $category)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
 
-        return response()->json(['data' => $category], 201);
+        $category->update(['name' => $request->name]);
+
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
     public function destroy(Category $category){
         $category->delete();
 
-        return response()->json(['message' => 'Kategori dihapus']);
+        return redirect()->route('category.index')->with('success', 'Kategori berhasil dihapus');
     }
+
 }

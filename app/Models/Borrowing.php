@@ -22,6 +22,7 @@ class Borrowing extends Model
         'borrower_name',
         'borrower_dob',
         'borrow_date',
+        'borrower_id',
         'return_date',
         'returned_at',
     ];
@@ -32,6 +33,8 @@ class Borrowing extends Model
         return $this->belongsTo(Buku::class, 'id_buku', 'id_buku');
     }
 
+
+    // problem
     public function borrower()
     {
         return $this->belongsTo(Borrower::class, 'borrower_id');

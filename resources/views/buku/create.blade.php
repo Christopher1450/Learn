@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head> -->
 @extends('layouts.app')
-<div class="container" style="padding-top: 300px; padding-bottom: 10px;">
+
 @section('content')
-<div class="container mt-5" style="max-width: 800px;">
+
+<!-- <div class="container" style="padding-top: 300px; padding-bottom: 10px;"> -->
+<div class="container mt-5" style="padding-top: 300px; max-width: 700px; padding-bottom:20px;">
     <h2 class="mb-4 fw-bold text-center">Tambah Buku Baru</h2>
 
     @if(session('success'))
