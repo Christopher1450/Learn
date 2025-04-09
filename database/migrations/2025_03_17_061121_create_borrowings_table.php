@@ -14,6 +14,7 @@ return new class extends Migration
 {
     Schema::create('borrowings', function (Blueprint $table) {
         $table->string('id_borrowing')->primary();
+        $table->string('kode_unit')->nullable();
         $table->string('id')->constrained('users')->onDelete('cascade');
         $table->string('id_buku')->constrained('buku')->onDelete('cascade');
         $table->string('borrower_name')->nullable();

@@ -25,7 +25,6 @@
     <form action="{{ route('peminjaman.store') }}" method="POST">
         @csrf
 
-        {{-- Autocomplete Nama --}}
         <div class="mb-3">
             <label for="borrower_name" class="form-label">Nama Peminjam</label>
             <input list="borrower-list" type="text" id="borrower_name" name="borrower_name" class="form-control" placeholder="Ketik nama..." required>
@@ -53,13 +52,11 @@
             </select>
         </div>
 
-        {{-- Tanggal Pinjam --}}
         <div class="mb-3">
             <label for="tgl_pinjam" class="form-label">Tanggal Pinjam</label>
             <input type="date" name="tgl_pinjam" id="tgl_pinjam" class="form-control" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
         </div>
 
-        {{-- Tanggal Kembali --}}
         <div class="mb-3">
             <label for="tgl_kembali" class="form-label">Tanggal Kembali</label>
             <input type="date" name="tgl_kembali" id="tgl_kembali" class="form-control" value="{{ \Carbon\Carbon::now()->addDays(7)->format('Y-m-d') }}" required>

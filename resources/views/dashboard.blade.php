@@ -117,7 +117,7 @@
                             data-url="{{ route('buku.destroy', $book->id_buku) }}">
                             Delete
                         </button>
-
+                        <a href="{{ route('buku.detail', $book->id_buku) }}" class="btn btn-info btn-sm">Detail</a>
                         </td>
                     @endif
                 </tr>

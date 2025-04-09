@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Models\BookUnit;
 
 class Buku extends Model
 {
@@ -21,6 +22,8 @@ class Buku extends Model
 }
 
     protected $fillable = [
+        'kode_buku',
+        'borrower_name',
         'judul_buku',
         'pengarang',
         'penerbit',
@@ -58,4 +61,8 @@ class Buku extends Model
     {
         return $this->belongsToMany(Category::class, 'buku_category', 'id_buku', 'category_id');
     }
+    public function units() {
+        return $this->hasMany(BookUnit::class, 'id_buku', 'id_buku');
+    }
+    
 }

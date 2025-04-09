@@ -17,6 +17,7 @@ class Borrowing extends Model
 
     protected $fillable = [
         'id_borrowing',
+        'kode_unit',
         'id',
         'id_buku',
         'borrower_name',
@@ -32,7 +33,16 @@ class Borrowing extends Model
     {
         return $this->belongsTo(Buku::class, 'id_buku', 'id_buku');
     }
+    public function unit()
+    {
+        return $this->belongsTo(\App\Models\BookUnit::class, 'kode_unit','kode_unit');
+    }
 
+    public function borrowing()
+    {
+        return $this->hasOne(Borrowing::class, 'kode_unit', 'kode_unit');
+    }
+    
 
     // problem
     public function borrower()
@@ -44,7 +54,7 @@ class Borrowing extends Model
     {
         return $this->belongsTo(User::class, 'id', 'id');
     }
-    protected static function boot()
+    protected static function boot(): void
 {
     parent::boot();
 

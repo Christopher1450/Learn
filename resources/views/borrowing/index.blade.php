@@ -24,6 +24,7 @@
             <tr>
                 <th>Buku</th>
                 <th>Nama Pengakses</th>
+                <th>Kode Unit</th>
                 <th>Nama Peminjam</th>
                 <th>Tanggal Pinjam</th>
                 <th>Tanggal Kembali</th>
@@ -42,6 +43,7 @@
             <td>{{ $borrowing->borrower_name }}</td>
             <td>{{ $borrowing->borrow_date ? \Carbon\Carbon::parse($borrowing->borrow_date)->format('Y-m-d') : '-' }}</td>
             <td>{{ $borrowing->returned_at ? \Carbon\Carbon::parse($borrowing->returned_at)->format('Y-m-d') : '-' }}</td>
+            <td>{{ $borrowing->unit->kode_unit ?? '-' }}</td>
             <!-- <td>{{ $borrowing->borrower_name ?? 'N/A' }}</td>
             <td>{{ $borrowing->borrower_dob ?? 'N/A' }}</td> -->
 
