@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <!-- {{-- TABEL UNIT STOK --}}
+    <!--
     <div class="card shadow-sm">
         <div class="card-body">
         <h4>Daftar Unit Buku</h4> -->
@@ -25,7 +25,7 @@
         <tr>
             <th>Buku</th>
             <th>Nama Peminjam</th>
-            <th>Kode Unit</th> <!-- Tambahkan ini -->
+            <th>Kode Unit</th>
             <th>Tanggal Pinjam</th>
             <th>Status</th>
         </tr>
@@ -35,7 +35,7 @@
 <tr>
     <td>{{ $borrowing->buku->judul_buku ?? '-' }}</td>
     <td>{{ $borrowing->borrower_name }}</td>
-    <td>{{ $borrowing->units->kode_buku ?? '-' }}</td>
+    <td>{{ $borrowing->borrowing->kode_unit ?? '-' }}</td>
     <td>{{ $borrowing->borrow_date }}</td>
     <td>
         @if ($borrowing->returned_at)

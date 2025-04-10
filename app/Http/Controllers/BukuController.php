@@ -49,14 +49,13 @@ class BukuController extends Controller
             'category_id.*.exists' => 'Kategori yang dipilih tidak valid.',
         ]);
 
-        // Generate kode_buku berdasarkan prefix judul
         $judul = $request->judul_buku;
         $prefix = strtoupper(substr($judul, 0, 1));
-        $jumlahPrefix = Buku::where('kode_buku', 'LIKE', $prefix . '%')->count() + 1;
+        $jumlahPrefix = Buku::where('kode_unit', 'LIKE', $prefix . '%')->count() + 1;
         $kodeBuku = $prefix . str_pad($jumlahPrefix, 5, '0', STR_PAD_LEFT);
 
         $buku = Buku::create([
-            'kode_buku' => $kodeBuku,
+            'kode_unit' => $kodeBuku,
             'judul_buku' => $judul,
             'pengarang' => $request->pengarang,
             'penerbit' => $request->penerbit,

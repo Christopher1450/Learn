@@ -97,7 +97,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="6" class="text-end fw-bold">Total</td>
+            <td colspan="7" class="text-end fw-bold">Total</td>
             <td>Rp {{ number_format($borrowings->sum('fee'), 0, ',', '.') }}</td>
             <td class="text-danger fw-bold">Rp {{ number_format($borrowings->sum('penalty'), 0, ',', '.') }}</td>
             <td></td>

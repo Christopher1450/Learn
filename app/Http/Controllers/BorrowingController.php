@@ -36,7 +36,6 @@ class BorrowingController extends Controller
         return back()->with('error', 'Tidak ada unit buku yang tersedia.');
     }
 
-    // Cek atau buat borrower
     $borrower = Borrower::firstOrCreate([
         'name' => $request->user_name,
         'date_of_birth' => $request->user_dob
@@ -53,7 +52,6 @@ class BorrowingController extends Controller
         'return_date' => now()->addDays(7),
     ]);
 
-    // Update stok & status unit
     $buku->decrement('stock');
     $unit->status = 'unavailable';
     $unit->save();

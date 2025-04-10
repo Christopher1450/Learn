@@ -10,7 +10,7 @@ class CreateBukuTable extends Migration
         Schema::create('buku', function (Blueprint $table) {
             $table->string('id_buku')->primary();
             $table->string('borrower_name')->nullable();
-            $table->string('kode_buku')->unique();
+            $table->string('kode_unit')->unique();
             $table->string('judul_buku');
             $table->string('pengarang');
             $table->string('penerbit');
