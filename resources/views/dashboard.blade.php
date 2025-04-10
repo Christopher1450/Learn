@@ -78,8 +78,8 @@
         </div>
 
 
-        <table class="table table-bordered shadow-sm">
-            <thead>
+        <div class="table-responsive">
+        <table class="table table-bordered w-100 shadow-sm">            <thead>
                 <tr>
                     <th>Judul Buku</th>
                     <th>Kategori</th>

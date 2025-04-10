@@ -45,7 +45,7 @@ class BorrowingController extends Controller
     Borrowing::create([
         'id' => auth()->id(),
         'id_buku' => $buku->id_buku,
-        'kode_unit' => $unit->id, // ← ini penting!
+        'kode_unit' => $unit->kode_unit, // mengikuti table
         'borrower_name' => $borrower->name,
         'borrower_id' => $borrower->id,
         'borrow_date' => now(),
@@ -93,7 +93,7 @@ class BorrowingController extends Controller
         Borrowing::create([
             'id' => auth()->id(),
             'id_buku' => $buku->id_buku,
-            'kode_unit' => $unit->id,
+            'kode_unit' => $unit->kode_unit,
             'borrower_id' => $borrower->id,
             'borrower_name' => $borrower->name,
             'borrow_date' => now(),
@@ -135,6 +135,30 @@ class BorrowingController extends Controller
         }
 
         return redirect()->route('peminjaman.index')->with('success', 'Buku berhasil dikembalikan.');
+    }
+
+    // BorrowingController.php
+
+public function edit($id)
+{
+    $borrowing = Borrowing::with(['buku', 'borrower', 'unit'])->findOrFail($id);
+    return view('borrowing.edit', compact('borrowing'));
+}
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'borrow_date' => 'required|date',
+            'return_date' => 'required|date|after_or_equal:borrow_date',
+        ]);
+
+        $borrowing = Borrowing::findOrFail($id);
+        $borrowing->update([
+            'borrow_date' => $request->borrow_date,
+            'return_date' => $request->return_date,
+        ]);
+
+        return redirect()->route('peminjaman.index')->with('success', 'Peminjaman berhasil diperbarui.');
     }
 
     public function destroy($id)

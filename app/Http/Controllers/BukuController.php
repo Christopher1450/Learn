@@ -17,23 +17,21 @@ class BukuController extends Controller
         return view('buku.index', compact('buku'));
     }
     public function create()
-{
-    $categories = \App\Models\Category::all(); // atau use App\Models\Category di atas
-    return view('buku.create', compact('categories'));
-}
+    {
+        $categories = \App\Models\Category::all(); // atau use App\Models\Category di atas
+        return view('buku.create', compact('categories'));
+    }
     public function show($id)
     {
         $buku = Buku::with(['categories', 'units'])->findOrFail($id);
-    
-        $unitIds = $buku->units->pluck('id');
-    
-        $borrowings = \App\Models\Borrowing::with(['unit', 'borrower', 'buku'])
-            ->whereIn('kode_unit', $unitIds)
-            ->get();
-    
-        return view('buku.detail', compact('buku', 'borrowings'));
+
+        $units = $buku->units()->with(['borrowing' => function ($q) {
+            $q->latest();
+        }])->get();
+
+        return view('buku.detail', compact('buku','units'));
     }
-    
+
     public function store(Request $request)
     {
         $request->validate([
@@ -75,6 +73,35 @@ class BukuController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Buku berhasil ditambahkan.');
     }
+
+    public function addStock(Request $request, $id)
+{
+    $request->validate([
+        'jumlah' => 'required|integer|min:1'
+    ]);
+
+    $buku = Buku::findOrFail($id);
+    $jumlah = $request->jumlah;
+
+    for ($i = 0; $i < $jumlah; $i++) {
+        \App\Models\BookUnit::create([
+            'id_buku' => $buku->id_buku,
+            'kode_unit' => Str::upper(Str::random(8)),
+            'status' => 'available'
+        ]);
+    }
+
+    // Tambah stok buku
+    $buku->increment('stock', $jumlah);
+
+    // Ubah status jika sebelumnya unavailable
+    if ($buku->status === 'unavailable') {
+        $buku->status = 'available';
+        $buku->save();
+    }
+
+    return back()->with('success', 'Stock Added!');
+}
 
     public function edit($id)
     {

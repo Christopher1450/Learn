@@ -16,7 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Borrower;
 use App\Http\Controllers\CategoryController;
-
+use App\Models\BookUnit;
+use App\Http\Controllers\BookUnitController;
 //Home
 Route::get('/', function () {
     return view('welcome');
@@ -52,6 +53,8 @@ Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('das
     Route::post('/peminjaman/borrow', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
     Route::post('/peminjaman/return/{borrowing}', [BorrowingController::class, 'return'])->name('peminjaman.return');
     Route::delete('/peminjaman/{id}', [BorrowingController::class, 'destroy'])->name('peminjaman.destroy');
+Route::get('/peminjaman/{id}/edit', [BorrowingController::class, 'edit'])->name('peminjaman.edit');
+Route::put('/peminjaman/{id}', [BorrowingController::class, 'update'])->name('peminjaman.update');
 
 
 
@@ -73,6 +76,10 @@ Route::post('/sirkulasi/pinjam', [SirkulasiController::class, 'pinjam'])->name('
 // Route::put('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
 Route::resource('buku', BukuController::class)->middleware('auth');
 Route::get('/buku/{id}/detail', [BukuController::class, 'show'])->name('buku.detail');
+Route::post('/buku/{id}/add-stock', [\App\Http\Controllers\BukuController::class, 'addStock'])->name('buku.addStock');
+Route::post('/unit/{id}/recover', [\App\Http\Controllers\BookUnitController::class, 'recover'])->name('unit.recover');
+Route::delete('/unit/{id}', [BookUnitController::class, 'destroy'])->name('unit.destroy');
+
 
 
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');

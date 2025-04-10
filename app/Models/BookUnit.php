@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookUnit extends Model
 {
-    protected $table = 'book_units'; // pastikan nama tabel benar
+    protected $table = 'book_units';
     protected $primaryKey = 'kode_unit';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -24,7 +24,7 @@ class BookUnit extends Model
 
     public function borrowing()
     {
-        return $this->hasOne(Borrowing::class, 'kode_unit', 'id')->whereNull('returned_at');
+        return $this->hasOne(Borrowing::class, 'kode_unit', 'kode_unit')->whereNull('returned_at'); // Problem di penamaan <--
     }
     public function borrowings()
     {
