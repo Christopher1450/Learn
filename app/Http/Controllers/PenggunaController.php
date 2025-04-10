@@ -64,7 +64,7 @@ class PenggunaController extends Controller
         'password' => bcrypt('password'), // password dummy juga
     ]);
 
-    return response()->json($user);
+    return response()->noContent(); 
 }
 
 }

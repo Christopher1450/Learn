@@ -4,7 +4,6 @@
 <div class="container" style="margin-bottom: 25px;margin-top: 80px ;">
     <h3>Detail Buku</h3>
     <div class="row">
-        <!-- Kiri: Detail buku dan form tambah stok -->
         <div class="col-md-4">
             <div class="card shadow-sm mb-2">
                 <div class="card-body">

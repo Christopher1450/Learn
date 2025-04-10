@@ -92,7 +92,7 @@ Route::post('/users/store', function (Request $request) {
         'date_of_birth' => $request->birth_date,
     ]);
 
-    return response()->json($borrower); // bisa diganti redirect atau return view jika kamu mau
+    return redirect()->route('dashboard')->with('success', 'Peminjam berhasil ditambahkan!');
 })->name('users.store');
 
 Route::get('/category', [CategoryController::class, 'index'])->name('category.index');

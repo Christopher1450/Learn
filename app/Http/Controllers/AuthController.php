@@ -32,8 +32,7 @@ class AuthController extends Controller
             'dob' => $request->dob,
         ]);
     
-        return response()->json($user);
-    }
+        return response()->noContent();     }
     
 
     public function logout()
