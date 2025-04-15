@@ -1,19 +1,48 @@
 @extends('layouts.app')
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard</title> -->
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <script src="{{ asset('js/delete.js') }}" defer></script>
-</head>
-<body>
 
+<body>
+<style>
+        table.dataTable {
+    border-radius: 0.5rem !important;
+    overflow: hidden;
+    border-collapse: separate !important;
+    border-spacing: 0;
+}
+
+table.dataTable th,
+table.dataTable td {
+    vertical-align: middle;
+}
+
+table.dataTable thead th:first-child {
+    border-top-left-radius: 0.5rem;
+}
+
+table.dataTable thead th:last-child {
+    border-top-right-radius: 0.5rem;
+}
+
+table.dataTable tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.5rem;
+}
+
+table.dataTable tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.5rem;
+}
+
+    </style>
 
     <!-- Navbar -->
     <!-- <nav class="navbar navbar-dark">
@@ -51,7 +80,7 @@
             </div>
         </div>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <h3>Daftar Buku</h3>
             <div class="d-flex align-items-center gap-2">
                 <!-- Filter -->
@@ -78,8 +107,10 @@
         </div>
 
 
-        <div class="table-responsive">
-        <table class="table table-bordered w-100 shadow-sm">            <thead>
+        <div class="table-responsive rounded shadow-sm overflow-hidden">
+    <table id="datatable" class="table table-bordered table-hover mb-0">
+
+        <thead>
                 <tr>
                     <th>Judul Buku</th>
                     <th>Kategori</th>
@@ -148,6 +179,16 @@
         </div>
     </div>
 
+    <!-- jQuery + DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#datatable').DataTable();
+        });
+    </script>
     <!-- JS -->
     <script>
         function setDeleteAction(action) {

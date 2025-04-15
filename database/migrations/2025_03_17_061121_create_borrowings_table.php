@@ -23,8 +23,10 @@ return new class extends Migration
         $table->date('returned_at')->nullable();
         $table->integer('fee')->default(0);
         $table->integer('penalty')->default(0);
+        $table->string('bukti_pengembalian')->nullable();
+        $table->string('bukti_pembayaran')->nullable();
         $table->timestamps();
-    });    
+            });    
         }
     }
 
@@ -34,5 +36,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('borrowings');
+        // Schema::table('borrowings', function (Blueprint $table) {
+        //     $table->string('bukti_pengembalian')->nullable(false)->change();
+        //     $table->string('bukti_pembayaran')->nullable(false)->change();
+        // });
     }
+    
 };

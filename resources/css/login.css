@@ -150,3 +150,35 @@
   .credits a:hover {
     opacity: 1;
   }
+  .dataTables_wrapper .table {
+    border-collapse: separate !important;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.dataTables_wrapper .table th,
+.dataTables_wrapper .table td {
+    vertical-align: middle;
+    border: 1px solid #dee2e6;
+}
+
+.dataTables_wrapper .table thead th:first-child {
+    border-top-left-radius: 0.5rem;
+}
+
+.dataTables_wrapper .table thead th:last-child {
+    border-top-right-radius: 0.5rem;
+}
+
+.dataTables_wrapper .table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.5rem;
+}
+
+.dataTables_wrapper .table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.5rem;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border-radius: 0.25rem !important;
+}

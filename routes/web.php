@@ -18,6 +18,9 @@ use App\Models\Borrower;
 use App\Http\Controllers\CategoryController;
 use App\Models\BookUnit;
 use App\Http\Controllers\BookUnitController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\VerificationController;
+
 //Home
 Route::get('/', function () {
     return view('welcome');
@@ -31,12 +34,16 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout')->middl
 //     ->middleware('throttle:5,1'); // rate limit 5 kali : 1 menit
 Route::post('/login', [LoginController::class, 'loginProcess'])->name('login.process');
 
+// Auth::routes(); // already includes login/register
+// Route::get('/email/verify', [App\Http\Controllers\Auth\VerificationController::class, 'show'])->name('verification.notice');
+// Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerificationController::class, 'verify'])->name('verification.verify');
+// Route::post('/email/resend', [App\Http\Controllers\Auth\VerificationController::class, 'resend'])->name('verification.resend');
 
 // Dashboard
 Route::get('/dashboard', function () {
     $buku = Buku::all();
     return view('dashboard', compact('buku'));
-})->name('dashboard')->middleware('auth');
+})->name('dashboard')->middleware('auth', 'verified');
 Route::resource('buku', BukuController::class)->middleware('auth');
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('dashboard.stats');
@@ -55,7 +62,13 @@ Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('das
     Route::delete('/peminjaman/{id}', [BorrowingController::class, 'destroy'])->name('peminjaman.destroy');
 Route::get('/peminjaman/{id}/edit', [BorrowingController::class, 'edit'])->name('peminjaman.edit');
 Route::put('/peminjaman/{id}', [BorrowingController::class, 'update'])->name('peminjaman.update');
+Route::post('/peminjaman/upload', [BorrowingController::class, 'uploadBukti'])
+    ->name('peminjaman.upload')
+    ->middleware('auth');
 
+Route::get('/bukti/download/{type}/{id}', [BorrowingController::class, 'downloadBukti'])
+    ->name('bukti.download')
+    ->middleware(['auth']);
 
 
 // // Mengelola Peminjaman Buku

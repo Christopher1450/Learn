@@ -10,7 +10,6 @@ class BookUnitController extends Controller
     {
         $unit = BookUnit::findOrFail($id);
 
-        // Pulihkan hanya kalau statusnya 'lost' atau 'unavailable' TANPA borrowing aktif
         $hasBorrowing = \App\Models\Borrowing::where('kode_unit', $unit->kode_unit)->whereNull('returned_at')->exists();
 
         if (($unit->status === 'lost' || $unit->status === 'unavailable') && !$hasBorrowing) {
@@ -24,10 +23,10 @@ class BookUnitController extends Controller
         {
             $unit = \App\Models\BookUnit::findOrFail($id);
 
-            // Optional: hanya bisa dihapus kalau tidak punya borrowing
             if ($unit->borrowing) {
                 return back()->with('error', 'Unit tidak bisa dihapus karena sedang dipinjam.');
             }
+            $unit->buku->decrement('stock');
 
             $unit->delete();
 

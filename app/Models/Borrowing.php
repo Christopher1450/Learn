@@ -26,6 +26,10 @@ class Borrowing extends Model
         'borrower_id',
         'return_date',
         'returned_at',
+        'fee',
+        'penalty',
+        'bukti_pengembalian',
+        'bukti_pembayaran',
     ];
     
 

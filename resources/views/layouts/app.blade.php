@@ -172,7 +172,7 @@
   </div>
 </div>
 
-    <div class="container mt-5 pt-5">
+    <div class="container">
         @yield('content')
     </div>
 
@@ -265,7 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
                 modal.hide();
-                location.reload(); // Reload biar muncul di autocomplete
+                location.reload();
             }, 1200);
         })
         .catch(() => {

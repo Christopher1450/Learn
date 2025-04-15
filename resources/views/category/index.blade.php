@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['noMarginTop' => true])
 
 @section('content')
 <div class="container" style="padding-top: 20px;padding-bottom: 40px;">

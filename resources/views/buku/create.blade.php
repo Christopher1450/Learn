@@ -51,6 +51,7 @@
         </div>
 
         <div class="mb-3">
+            
             <label for="stock" class="form-label">Stok</label>
             <input type="number" name="stock" id="stock" class="form-control" min="1" required>
         </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="margin-bottom: 25px;margin-top: 80px ;">
+<div class="container" style="margin-bottom: 25px;margin-top: 0px ;max-height: 800px;">
     <h3>Detail Buku</h3>
     <div class="row">
         <div class="col-md-4">

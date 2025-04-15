@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container mt-4">
+<div class="container mt-6">
+<div class="row justify-content-center">
+<div class="col-md-8 col-lg-6">
     <h2>Form Peminjaman Buku</h2>
     <!-- <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary mb-3">Lihat Daftar Peminjaman</a> -->
 
