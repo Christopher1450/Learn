@@ -31,6 +31,8 @@
                 <th>Fee</th>
                 <th>Denda</th>
                 <th>Status</th>
+                <th>Jenis Jaminan</th>
+                <th>Jumlah Jaminan</th>
                 <th>Bukti Dikembalikan</th>
                 <th>Bukti Bayar</th>
                 <th>Action</th>
@@ -67,6 +69,15 @@
                     <span class="badge bg-success">Dikembalikan</span>
                 @else
                     <span class="badge bg-warning text-dark">Belum Dikembalikan</span>
+                @endif
+            </td>
+            <td>{{ $borrowing->jenis_jaminan }}</td>
+            <!-- <td>{{ $borrowing->jumlah_jaminan }}</td> -->
+            <td>
+                @if ($borrowing->jenis_jaminan == 'uang')
+                    Rp {{ number_format($borrowing->nilai_jaminan, 0, ',', '.') }}
+                @else
+                    {{ $borrowing->nilai_jaminan }}
                 @endif
             </td>
             <td class="align-top">

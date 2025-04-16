@@ -42,6 +42,7 @@ class BukuController extends Controller
             'category_id' => 'required|array',
             'category_id.*' => 'exists:categories,id',
             'stock' => 'required|integer|min:1',
+            'nilai_jaminan' => 'required|string|max:255',
         ], [
             'category_id.required' => 'Pilih setidaknya satu kategori.',
             'category_id.*.exists' => 'Kategori yang dipilih tidak valid.',
@@ -52,6 +53,9 @@ class BukuController extends Controller
         $jumlahPrefix = Buku::where('kode_unit', 'LIKE', $prefix . '%')->count() + 1;
         $kodeBuku = $prefix . str_pad($jumlahPrefix, 5, '0', STR_PAD_LEFT);
 
+        $rawJaminan = $request->nilai_jaminan;
+        $cleanJaminan = preg_replace('/[^\d]/', '', $rawJaminan);
+
         $buku = Buku::create([
             'kode_unit' => $kodeBuku,
             'judul_buku' => $judul,
@@ -59,6 +63,7 @@ class BukuController extends Controller
             'penerbit' => $request->penerbit,
             'th_terbit' => $request->th_terbit,
             'stock' => $request->stock,
+            'nilai_jaminan' => (int) $cleanJaminan,
             'status' => 'available'
         ]);
 
@@ -91,10 +96,9 @@ class BukuController extends Controller
         ]);
     }
 
-    // Tambah stok buku
     $buku->increment('stock', $jumlah);
 
-    // Ubah status jika sebelumnya unavailable
+    // Ubah status 
     if ($buku->status === 'unavailable') {
         $buku->status = 'available';
         $buku->save();
@@ -120,6 +124,7 @@ class BukuController extends Controller
             'category_id' => 'required|array',
             'category_id.*' => 'exists:categories,id',
             'stock' => 'required|integer|min:1',
+            'nilai_jaminan' => 'required|string|max:255',
         ]);
 
         $buku = Buku::findOrFail($id);
@@ -130,6 +135,7 @@ class BukuController extends Controller
             'penerbit' => $request->penerbit,
             'th_terbit' => $request->th_terbit,
             'stock' => $request->stock,
+            'nilai_jaminan' => $request->jaminan,
         ]);
 
         $buku->categories()->sync($request->category_id);

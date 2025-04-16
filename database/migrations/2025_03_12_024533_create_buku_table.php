@@ -17,6 +17,7 @@ class CreateBukuTable extends Migration
             $table->year('th_terbit');
             // $table->string('category_id');
             $table->integer('stock');
+            $table->string('nilai_jaminan');
             $table->string('status')->default('available');
 
         

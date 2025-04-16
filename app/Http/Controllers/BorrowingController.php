@@ -72,7 +72,22 @@ class BorrowingController extends Controller
             'borrower_name' => 'required|string|max:255',
             'borrower_dob' => 'required|date',
             'id_buku' => 'required|exists:buku,id_buku',
+            'jenis_jaminan' => 'required|in:uang,barang',
+            'nilai_jaminan' => 'required_if:jenis_jaminan,uang',
+            'bukti_jaminan' => 'required_if:jenis_jaminan,barang|image|mimes:jpg,jpeg,png|max:10240',
         ]);
+
+        $jaminan_uang = null;
+        $jaminan_barang_path = null;
+
+        if ($request->jenis_jaminan === 'uang') {
+            $raw = $request->nilai_jaminan;
+            $clean = preg_replace('/[^\d]/', '', $raw);
+            $jaminan_uang = (int) $clean;
+        } else {
+            $file = $request->file('bukti_jaminan');
+            $jaminan_barang_path = $file->storeAs('jaminan_barang', uniqid().'_'.$file->getClientOriginalName(), 'public');
+        }
 
         $buku = Buku::findOrFail($request->id_buku);
 
@@ -102,6 +117,9 @@ class BorrowingController extends Controller
             'return_date' => now()->addDays(7),
             'bukti_pengembalian' => '',
             'bukti_pembayaran' => '',
+            'jenis_jaminan' => $request->jenis_jaminan,
+            'nilai_jaminan' => $buku->nilaiJaminan,
+            'bukti_jaminan' => $request->buktiJaminanPath,
         ]);
 
         $buku->decrement('stock');

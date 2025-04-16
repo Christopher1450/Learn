@@ -29,6 +29,7 @@ class Buku extends Model
         'penerbit',
         'th_terbit',
         'stock',
+        'nilai_jaminan',
         'category_id',
     ];
 

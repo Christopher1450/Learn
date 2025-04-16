@@ -12,7 +12,7 @@
 @section('content')
 
 <!-- <div class="container" style="padding-top: 300px; padding-bottom: 10px;"> -->
-<div class="container mt-5" style="padding-top: 300px; max-width: 700px; padding-bottom:20px;">
+<div class="container mt-5" style="padding-top: 400px; max-width: 700px; padding-bottom:20px;">
     <h2 class="mb-4 fw-bold text-center">Tambah Buku Baru</h2>
 
     @if(session('success'))
@@ -50,11 +50,15 @@
                 required>
         </div>
 
-        <div class="mb-3">
-            
+        <div class="mb-3"> 
             <label for="stock" class="form-label">Stok</label>
             <input type="number" name="stock" id="stock" class="form-control" min="1" required>
         </div>
+
+        <div class="mb-3">
+            <label for="nilai_jaminan" class="form-label">Nilai Jaminan</label>
+            <input type="text" name="nilai_jaminan" id="nilai_jaminan" class="form-control" value="Rp 0,-" required>
+            </div>
 
         <div class="mb-3">
         <label for="category_id" class="form-label">Kategori <span class="text-danger">*</span></label>
@@ -97,3 +101,17 @@
             });
         });
         </script>
+
+<!-- Pricing -->
+<script>
+    const input = document.getElementById('nilai_jaminan');
+    input.addEventListener('input', function () {
+        let val = this.value.replace(/[^0-9]/g, ''); // hanya angka
+        val = val.replace(/^0+/, ''); // hapus nol di depan
+        if (val === '') {
+            this.value = 'Rp 0,-';
+        } else {
+            this.value = 'Rp ' + parseInt(val).toLocaleString('id-ID') + ',-';
+        }
+    });
+</script>

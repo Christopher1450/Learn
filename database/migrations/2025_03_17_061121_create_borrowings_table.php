@@ -11,24 +11,31 @@ return new class extends Migration
      */
     public function up(): void
     {
-{
+        {
     Schema::create('borrowings', function (Blueprint $table) {
         $table->string('id_borrowing')->primary();
         $table->string('kode_unit')->nullable();
-        $table->string('id')->constrained('users')->onDelete('cascade');
-        $table->string('id_buku')->constrained('buku')->onDelete('cascade');
+        $table->string('id');
+        $table->string('id_buku');
         $table->string('borrower_name')->nullable();
         $table->date('borrow_date');
         $table->date('return_date');
         $table->date('returned_at')->nullable();
+        
+        // Jaminan
+        $table->enum('jenis_jaminan', ['uang', 'barang']);
+        $table->integer('nilai_jaminan')->nullable();
+        $table->string('bukti_jaminan')->nullable();
+    
         $table->integer('fee')->default(0);
         $table->integer('penalty')->default(0);
         $table->string('bukti_pengembalian')->nullable();
         $table->string('bukti_pembayaran')->nullable();
+    
         $table->timestamps();
-            });    
-        }
+        });
     }
+}
 
     /**
      * Reverse the migrations.

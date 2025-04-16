@@ -48,6 +48,24 @@
     <input type="hidden" name="user_name" id="user_name">
     <input type="hidden" name="user_dob" id="user_dob">
 
+    <div class="mb-3">
+    <label class="form-label">Jenis Jaminan</label>
+    <select id="jenis_jaminan" name="jenis_jaminan" class="form-select" required>
+        <option value="">-- Pilih --</option>
+        <option value="uang">Uang</option>
+        <option value="barang">Barang</option>
+    </select>
+    </div>
+
+    <div class="mb-3" id="input-jaminan-uang" style="display: none;">
+        <label for="nilai_jaminan" class="form-label">Jumlah Uang Dijaminkan</label>
+        <input type="text" class="form-control" id="nilai_jaminan" name="nilai_jaminan" placeholder="Rp 0,-">
+    </div>
+
+    <div class="mb-3" id="input-jaminan-barang" style="display: none;">
+        <label for="bukti_jaminan" class="form-label">Upload Bukti Barang</label>
+        <input type="file" class="form-control" id="bukti_jaminan" name="bukti_jaminan" accept="image/*">
+    </div>
 
     <div class="form-group mb-3">
         <label for="id_buku" class="form-label">Pilih Buku:</label>
@@ -138,6 +156,31 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const jenis = document.getElementById('jenis_jaminan');
+    const uangInput = document.getElementById('input-jaminan-uang');
+    const barangInput = document.getElementById('input-jaminan-barang');
+
+    jenis.addEventListener('change', function () {
+        if (this.value === 'uang') {
+            uangInput.style.display = 'block';
+            barangInput.style.display = 'none';
+        } else if (this.value === 'barang') {
+            uangInput.style.display = 'none';
+            barangInput.style.display = 'block';
+        } else {
+            uangInput.style.display = 'none';
+            barangInput.style.display = 'none';
+        }
+    });
+
+    // Format input uang
+    document.getElementById('nilai_jaminan').addEventListener('input', function () {
+        let val = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');
+        this.value = val ? 'Rp ' + parseInt(val).toLocaleString('id-ID') + ',-' : 'Rp 0,-';
+    });
+});
+
 document.addEventListener("DOMContentLoaded", function () {
     const borrowers = @json($borrowers);
     const input = document.getElementById('borrower_name_search');
