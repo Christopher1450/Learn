@@ -34,9 +34,6 @@ class Borrowing extends Model
         'pengembalian_jaminan',
     ];
     
-    
-    
-
     public function buku()
     {
         return $this->belongsTo(Buku::class, 'id_buku', 'id_buku');
@@ -51,23 +48,23 @@ class Borrowing extends Model
         return $this->hasOne(Borrowing::class, 'kode_unit', 'kode_unit');
     }
     public function hitungFee()
-{
-    return Carbon::parse($this->borrow_date)->diffInDays($this->returned_at ?? now()) * 10000;
-}
+    {
+        return Carbon::parse($this->borrow_date)->diffInDays($this->returned_at ?? now()) * 10000;
+    }
 
-public function hitungDenda()
-{
-    $selisih = Carbon::parse($this->return_date)->diffInDays($this->returned_at ?? now(), false);
-    return $selisih > 0 ? $selisih * 5000 : 0;
-}
+    public function hitungDenda()
+    {
+        $selisih = Carbon::parse($this->return_date)->diffInDays($this->returned_at ?? now(), false);
+        return $selisih > 0 ? $selisih * 5000 : 0;
+    }
 
-public function hitungUangKembali()
-{
-    if ($this->jenis_jaminan !== 'uang') return 0;
+    public function hitungUangKembali()
+    {
+        if ($this->jenis_jaminan !== 'uang') return 0;
 
-    $total = $this->hitungFee() + $this->hitungDenda();
-    return max(0, $this->jumlah_jaminan - $total);
-}
+        $total = $this->hitungFee() + $this->hitungDenda();
+        return max(0, $this->jumlah_jaminan - $total);
+    }
 
     public function hitungPengembalianJaminan()
     {
@@ -95,39 +92,39 @@ public function hitungUangKembali()
         return $this->belongsTo(User::class, 'id', 'id');
     }
     protected static function boot(): void
-{
-    parent::boot();
+    {
+        parent::boot();
 
-    static::creating(function ($model) {
-        $last = self::orderBy('id_borrowing', 'desc')->first();
+        static::creating(function ($model) {
+            $last = self::orderBy('id_borrowing', 'desc')->first();
+            // buat def mulai dr A001
+            if (!$last) {
+                $model->id_borrowing = 'A001';
+                return;
+            }
 
-        if (!$last) {
-            $model->id_borrowing = 'A001';
-            return;
-        }
+            $lastId = $last->id_borrowing;
 
-        $lastId = $last->id_borrowing;
+            // Pisah huruf & angka
+            preg_match('/^([A-Z]+)(\d{3})$/', $lastId, $parts);
 
-        // Pisah huruf & angka
-        preg_match('/^([A-Z]+)(\d{3})$/', $lastId, $parts);
+            $prefix = $parts[1];
+            $number = (int) $parts[2];
+                // Hitungan 3 digit
+            if ($number >= 999) {
+                // Tambah prefix huruf
+                $prefix = self::incrementLetters($prefix);
+                $number = 1;
+            } else {
+                $number += 1;
+            }
 
-        $prefix = $parts[1];
-        $number = (int) $parts[2];
+            $newId = $prefix . str_pad($number, 3, '0', STR_PAD_LEFT);
+            $model->id_borrowing = $newId;
+        });
+    }
 
-        if ($number >= 999) {
-            // Tambah prefix huruf
-            $prefix = self::incrementLetters($prefix);
-            $number = 1;
-        } else {
-            $number += 1;
-        }
-
-        $newId = $prefix . str_pad($number, 3, '0', STR_PAD_LEFT);
-        $model->id_borrowing = $newId;
-    });
-}
-
-    // increment A → B, Z → AA, AZ → BA
+    // increment A → B, Z → AA, AZ → BA ga gt kepake (buat cosmetic doang sih)
     protected static function incrementLetters($letters)
     {
         $length = strlen($letters);

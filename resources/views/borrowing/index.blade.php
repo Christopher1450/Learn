@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 @section('content')
-<div class="container-fluid" style="margin-top: 10px; padding-left: 0;">
+<div class="container-fluid" style="margin-top: 10px; padding-left: 0 ;transform: scale(0.9); transform-origin: top left; width: max-content;">
     <h2 class="mb-3">List Peminjaman Buku</h2>
     <table class="table table-bordered shadow-sm">
         <thead>
@@ -83,17 +83,19 @@
             </td>
             <td class="align-top">
                 @if ($borrowing->bukti_pengembalian)
-                    <a href="{{ route('bukti.download', ['type' => 'pengembalian', 'id' => $borrowing->id_borrowing]) }}" target="_blank"
-                    class="btn btn-info btn-sm w-100 mb-1">⬇️ Bukti Pengembalian</a>
-                @else
+                <a href="{{ route('bukti.download', ['type' => 'pengembalian', 'id' => $borrowing->id_borrowing]) }}" target="_blank" class="btn">
+                    <img src="{{ asset('images/Edited_Download_Logo.jpg') }}" alt="Download" width="60" height="60">
+                </a>
+                    @else
                     -
                 @endif
             </td>
 
             <td class="align-top">
                 @if ($borrowing->bukti_pembayaran)
-                    <a href="{{ route('bukti.download', ['type' => 'pembayaran', 'id' => $borrowing->id_borrowing]) }}" target="_blank"
-                    class="btn btn-info btn-sm w-100">⬇️ Bukti Pembayaran</a>
+                    <a href="{{ route('bukti.download', ['type' => 'pembayaran', 'id' => $borrowing->id_borrowing]) }}" target="_blank" class="btn">
+                        <img src="{{ asset('images/Edited_Download_Logo.jpg') }}" alt="Download" width="60" height="60">
+                    <!-- class="btn btn-info btn-sm">⬇️ Bukti Pembayaran</a> -->
                 @else
                     -
                 @endif
@@ -102,12 +104,12 @@
                 @if ($borrowing->returned_at)
                     @if ($borrowing->jenis_jaminan === 'uang')
                         <div class="text-success fw-bold">
-                            Uang Dikembalikan:<br>
+                            Uang kembalian:<br>
                             Rp {{ number_format($borrowing->pengembalian_jaminan ?? 0, 0, ',', '.') }}
                         </div>
                     @elseif ($borrowing->jenis_jaminan === 'barang' && $borrowing->bukti_jaminan)
-                        <a href="{{ asset('storage/' . $borrowing->bukti_jaminan) }}" target="_blank" class="btn btn-info btn-sm w-100">
-                            ⬇️ Lihat Bukti Barang
+                        <a href="{{ asset('storage/' . $borrowing->bukti_jaminan) }}" target="_blank" class="btn btn-info btn-sm">
+                            Pengembalian barang Bukti
                         </a>
                     @endif
                 @else

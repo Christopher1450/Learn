@@ -94,8 +94,22 @@
 <script>
 document.getElementById('jenis_jaminan').addEventListener('change', function () {
     const jenis = this.value;
+    const nilaiJaminan = document.getElementById('nilai_jaminan');
+    const buktiBarang = document.getElementById('bukti_jaminan');
+
     document.getElementById('input-jaminan-uang').style.display = jenis === 'uang' ? 'block' : 'none';
     document.getElementById('input_barang').style.display = jenis === 'barang' ? 'block' : 'none';
+
+    if (jenis === 'uang') {
+        nilaiJaminan.required = true;
+        buktiBarang.required = false;
+    } else if (jenis === 'barang') {
+        nilaiJaminan.required = false;
+        buktiBarang.required = true;
+    } else {
+        nilaiJaminan.required = false;
+        buktiBarang.required = false;
+    }
 });
 
 document.getElementById('nilai_jaminan').addEventListener('input', function () {
@@ -192,6 +206,17 @@ bukuSelect.addEventListener('change', function () {
     } else {
         infoJaminan.textContent = 'Nilai minimum jaminan akan muncul di sini...';
     }
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const select = document.getElementById('id_buku');
+    const form = document.getElementById('borrow-form');
+
+    select.addEventListener('change', function () {
+        const bukuId = this.value;
+        if (bukuId) {
+            form.action = `/peminjaman/borrow/${bukuId}`;
+        }
+    });
 });
 </script>
 @endsection
