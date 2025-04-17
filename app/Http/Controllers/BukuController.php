@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\BookUnit;
-
-use App\Models\Buku;
-use App\Models\Category;
+use App\Models\{Buku, Category, BookUnit};
 use Illuminate\Support\Str;
+use Milon\Barcode\DNS1D;
 
 class BukuController extends Controller
 {
@@ -16,15 +14,16 @@ class BukuController extends Controller
         $buku = Buku::with('category')->get();
         return view('buku.index', compact('buku'));
     }
+
     public function create()
     {
-        $categories = \App\Models\Category::all(); // atau use App\Models\Category di atas
+        $categories = Category::all();
         return view('buku.create', compact('categories'));
     }
+
     public function show($id)
     {
         $buku = Buku::with(['categories', 'units'])->findOrFail($id);
-
         $units = $buku->units()->with(['borrowing' => function ($q) {
             $q->latest();
         }])->get();
@@ -67,45 +66,59 @@ class BukuController extends Controller
             'status' => 'available'
         ]);
 
+        $barcode = new DNS1D();
+        $barcode->setStorPath(public_path('barcodes'));
+
         for ($i = 0; $i < $request->stock; $i++) {
+            $kodeUnit = Str::upper(Str::random(8));
+            $barcodeImage = $barcode->getBarcodePNGPath($kodeUnit, 'C39');
+
             BookUnit::create([
                 'id_buku' => $buku->id_buku,
-                'kode_unit' => Str::upper(Str::random(8)),
-                'status' => 'available'
+                'kode_unit' => $kodeUnit,
+                'status' => 'available',
+                'barcode_path' => 'barcodes/' . basename($barcodeImage)
             ]);
         }
+
         $buku->categories()->sync($request->category_id);
 
         return redirect()->route('dashboard')->with('success', 'Buku berhasil ditambahkan.');
     }
 
     public function addStock(Request $request, $id)
-{
-    $request->validate([
-        'jumlah' => 'required|integer|min:1'
-    ]);
-
-    $buku = Buku::findOrFail($id);
-    $jumlah = $request->jumlah;
-
-    for ($i = 0; $i < $jumlah; $i++) {
-        \App\Models\BookUnit::create([
-            'id_buku' => $buku->id_buku,
-            'kode_unit' => Str::upper(Str::random(8)),
-            'status' => 'available'
+    {
+        $request->validate([
+            'jumlah' => 'required|integer|min:1'
         ]);
+
+        $buku = Buku::findOrFail($id);
+        $jumlah = $request->jumlah;
+
+        $barcode = new DNS1D();
+        $barcode->setStorPath(public_path('barcodes'));
+
+        for ($i = 0; $i < $jumlah; $i++) {
+            $kodeUnit = Str::upper(Str::random(8));
+            $barcodeImage = $barcode->getBarcodePNGPath($kodeUnit, 'C39');
+
+            BookUnit::create([
+                'id_buku' => $buku->id_buku,
+                'kode_unit' => $kodeUnit,
+                'status' => 'available',
+                'barcode_path' => 'barcodes/' . basename($barcodeImage)
+            ]);
+        }
+
+        $buku->increment('stock', $jumlah);
+
+        if ($buku->status === 'unavailable') {
+            $buku->status = 'available';
+            $buku->save();
+        }
+
+        return back()->with('success', 'Stock Added!');
     }
-
-    $buku->increment('stock', $jumlah);
-
-    // Ubah status 
-    if ($buku->status === 'unavailable') {
-        $buku->status = 'available';
-        $buku->save();
-    }
-
-    return back()->with('success', 'Stock Added!');
-}
 
     public function edit($id)
     {
@@ -135,7 +148,7 @@ class BukuController extends Controller
             'penerbit' => $request->penerbit,
             'th_terbit' => $request->th_terbit,
             'stock' => $request->stock,
-            'nilai_jaminan' => $request->jaminan,
+            'nilai_jaminan' => preg_replace('/[^\d]/', '', $request->nilai_jaminan),
         ]);
 
         $buku->categories()->sync($request->category_id);

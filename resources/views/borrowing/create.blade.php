@@ -51,9 +51,23 @@
         <small id="info-jaminan" class="form-text text-muted">Nilai minimum jaminan akan muncul di sini...</small>
     </div>
 
+    <td>
+            @if ($unit->barcode_path)
+                <img src="{{ asset($unit->barcode_path) }}" alt="Barcode {{ $unit->kode_unit }}" width="200">
+            @else
+                Tidak tersedia
+            @endif
+    </td>
+
     <div class="mb-3" id="input_barang" style="display: none;">
         <label for="bukti_jaminan" class="form-label">Upload Bukti Barang</label>
         <input type="file" name="bukti_jaminan" id="bukti_jaminan" class="form-control">
+    </div>
+
+    <div class="mb-3" id="input-jaminan-uang">
+        <label for="nilai_jaminan" class="form-label">Jumlah Jaminan (Rp)</label>
+        <input type="text" name="nilai_jaminan" id="nilai_jaminan" class="form-control" required>
+        <small id="info-jaminan" class="form-text text-muted">Nilai minimum jaminan akan muncul di sini...</small>
     </div>
 
     <div class="form-group mb-3">

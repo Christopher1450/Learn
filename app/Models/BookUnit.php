@@ -28,6 +28,25 @@ class BookUnit extends Model
     }
     public function borrowings()
     {
-        return $this->hasMany(Borrowing::class, 'kode_unit');
+        return $this->hasMany(Borrowing::class, 'kode_unit', 'kode_unit');
+    }
+
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', 'available');
+    }
+
+    public function scopeUnavailable($query)
+    {
+        return $query->where('status', 'unavailable');
+    }
+
+    public function scopeLost($query)
+    {
+        return $query->where('status', 'lost');
+    }
+    public function scopeDamaged($query)
+    {
+        return $query->where('status', 'damaged');
     }
 }

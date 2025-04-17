@@ -39,8 +39,30 @@ class BorrowingController extends Controller
         if ($buku->stock <= 0) {
             return back()->with('error', 'Stok buku habis');
         }
+        // Beta ini Beta
+        
+        // $kodeUnitValid = ['4AGPJE3G', 'DSYDANIN'];
 
-        $unit = $buku->units()->where('status', 'available')->first();
+        // $unit = BookUnit::whereIn('kode_unit', $kodeUnitValid)
+        //     ->where('id_buku', $buku->id_buku)
+        //     ->where('status', 'available')
+        //     ->whereDoesntHave('borrowings', function ($q) {
+        //         $q->whereNull('returned_at'); // belum dikembalikan
+        //     })
+        //     ->first();
+
+        // if (!$unit) {
+        //     return back()->with('error', 'Tidak ada unit buku yang bisa dipinjam saat ini.');
+        // }
+
+
+        $unit = $buku->units()
+            ->where('status', 'available')
+            ->whereDoesntHave('borrowings', function ($q) {
+                $q->whereNull('returned_at');
+            })
+            ->first();
+
         if (!$unit) {
             return back()->with('error', 'Tidak ada unit buku yang tersedia.');
         }
