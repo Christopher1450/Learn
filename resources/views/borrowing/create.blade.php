@@ -5,7 +5,6 @@
 <div class="row justify-content-center">
 <div class="col-md-8 col-lg-6">
     <h2>Form Peminjaman Buku</h2>
-    <!-- <a href="{{ route('peminjaman.index') }}" class="btn btn-secondary mb-3">Lihat Daftar Peminjaman</a> -->
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -14,25 +13,14 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    <form action="{{ route('peminjaman.borrow', ['buku' => old('id_buku')]) }}" method="POST" id="borrow-form">
+    <form action="#" method="POST" id="borrow-form" enctype="multipart/form-data">
     @csrf
 
-    <!-- <div class="form-group mb-3">
-        <label for="borrower_select" class="form-label">Nama Peminjam:</label>
-        <select id="borrower_select" class="form-select" required>
-            <option value="">-- Pilih Nama --</option>
-            @foreach ($borrowers as $br)
-                <option value="{{ $br->name }}|{{ $br->date_of_birth }}">{{ $br->name }} ({{ $br->date_of_birth }})</option>
-            @endforeach
-            <option value="new">➕ Tambah Peminjam Baru</option>
-        </select>
-    </div> -->
     <div class="form-group mb-3">
     <label for="borrower_name_search" class="form-label">Nama Peminjam:</label>
     <input type="text" id="borrower_name_search" class="form-control" placeholder="Ketik nama..." autocomplete="off">
     <div id="borrower-suggestion" class="list-group mt-1" style="display: none; position: absolute; z-index: 10;"></div>
     </div>
-
 
     <div id="new-borrower-fields" style="display: none;">
         <div class="form-group mb-3">
@@ -49,22 +37,23 @@
     <input type="hidden" name="user_dob" id="user_dob">
 
     <div class="mb-3">
-    <label class="form-label">Jenis Jaminan</label>
-    <select id="jenis_jaminan" name="jenis_jaminan" class="form-select" required>
-        <option value="">-- Pilih --</option>
-        <option value="uang">Uang</option>
-        <option value="barang">Barang</option>
-    </select>
+        <label class="form-label">Jenis Jaminan</label>
+        <select id="jenis_jaminan" name="jenis_jaminan" class="form-select" required>
+            <option value="">-- Pilih --</option>
+            <option value="uang">Uang</option>
+            <option value="barang">Barang</option>
+        </select>
     </div>
 
-    <div class="mb-3" id="input-jaminan-uang" style="display: none;">
-        <label for="nilai_jaminan" class="form-label">Jumlah Uang Dijaminkan</label>
-        <input type="text" class="form-control" id="nilai_jaminan" name="nilai_jaminan" placeholder="Rp 0,-">
+    <div class="mb-3" id="input-jaminan-uang">
+        <label for="nilai_jaminan" class="form-label">Jumlah Jaminan (Rp)</label>
+        <input type="text" name="nilai_jaminan" id="nilai_jaminan" class="form-control" required>
+        <small id="info-jaminan" class="form-text text-muted">Nilai minimum jaminan akan muncul di sini...</small>
     </div>
 
-    <div class="mb-3" id="input-jaminan-barang" style="display: none;">
+    <div class="mb-3" id="input_barang" style="display: none;">
         <label for="bukti_jaminan" class="form-label">Upload Bukti Barang</label>
-        <input type="file" class="form-control" id="bukti_jaminan" name="bukti_jaminan" accept="image/*">
+        <input type="file" name="bukti_jaminan" id="bukti_jaminan" class="form-control">
     </div>
 
     <div class="form-group mb-3">
@@ -100,10 +89,20 @@
 
     <button type="submit" class="btn btn-primary">Pinjam</button>
 </form>
-
 </div>
 
 <script>
+document.getElementById('jenis_jaminan').addEventListener('change', function () {
+    const jenis = this.value;
+    document.getElementById('input-jaminan-uang').style.display = jenis === 'uang' ? 'block' : 'none';
+    document.getElementById('input_barang').style.display = jenis === 'barang' ? 'block' : 'none';
+});
+
+document.getElementById('nilai_jaminan').addEventListener('input', function () {
+    let val = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');
+    this.value = val ? 'Rp ' + parseInt(val).toLocaleString('id-ID') + ',-' : 'Rp 0,-';
+});
+
 document.addEventListener("DOMContentLoaded", function () {
     const select = document.getElementById('id_buku');
     const form = document.getElementById('borrow-form');
@@ -127,60 +126,10 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('buku-info').style.display = 'none';
         }
     });
-
-    const borrowerSelect = document.getElementById('borrower_select');
-    const newFields = document.getElementById('new-borrower-fields');
-    const userName = document.getElementById('user_name');
-    const userDob = document.getElementById('user_dob');
-
-    borrowerSelect.addEventListener('change', function () {
-        const value = this.value;
-        if (value === "new") {
-            newFields.style.display = "block";
-            userName.value = "";
-            userDob.value = "";
-        } else {
-            newFields.style.display = "none";
-            const [name, dob] = value.split('|');
-            userName.value = name;
-            userDob.value = dob;
-        }
-    });
-
-    form.addEventListener('submit', function () {
-        if (borrowerSelect.value === "new") {
-            userName.value = document.getElementById('borrower_name').value;
-            userDob.value = document.getElementById('borrower_dob').value;
-        }
-    });
 });
 </script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const jenis = document.getElementById('jenis_jaminan');
-    const uangInput = document.getElementById('input-jaminan-uang');
-    const barangInput = document.getElementById('input-jaminan-barang');
-
-    jenis.addEventListener('change', function () {
-        if (this.value === 'uang') {
-            uangInput.style.display = 'block';
-            barangInput.style.display = 'none';
-        } else if (this.value === 'barang') {
-            uangInput.style.display = 'none';
-            barangInput.style.display = 'block';
-        } else {
-            uangInput.style.display = 'none';
-            barangInput.style.display = 'none';
-        }
-    });
-
-    // Format input uang
-    document.getElementById('nilai_jaminan').addEventListener('input', function () {
-        let val = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');
-        this.value = val ? 'Rp ' + parseInt(val).toLocaleString('id-ID') + ',-' : 'Rp 0,-';
-    });
-});
-
 document.addEventListener("DOMContentLoaded", function () {
     const borrowers = @json($borrowers);
     const input = document.getElementById('borrower_name_search');
@@ -197,9 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const filtered = borrowers.filter(b =>
-            b.name.toLowerCase().includes(keyword)
-        );
+        const filtered = borrowers.filter(b => b.name.toLowerCase().includes(keyword));
 
         if (filtered.length === 0) {
             suggestionBox.style.display = 'none';
@@ -230,4 +177,21 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+<script>
+const bukuSelect = document.getElementById('id_buku');
+const infoJaminan = document.getElementById('info-jaminan');
+
+const bukuData = @json($buku->mapWithKeys(function($b) {
+    return [$b->id_buku => ['judul' => $b->judul_buku, 'jaminan' => $b->nilai_minimum_jaminan]];
+}));
+
+bukuSelect.addEventListener('change', function () {
+    const selected = this.value;
+    if (bukuData[selected]) {
+        infoJaminan.textContent = 'Nilai minimum jaminan: Rp ' + parseInt(bukuData[selected].jaminan).toLocaleString('id-ID');
+    } else {
+        infoJaminan.textContent = 'Nilai minimum jaminan akan muncul di sini...';
+    }
+});
+</script>
 @endsection

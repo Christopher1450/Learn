@@ -24,13 +24,15 @@ return new class extends Migration
         
         // Jaminan
         $table->enum('jenis_jaminan', ['uang', 'barang']);
-        $table->integer('nilai_jaminan')->nullable();
+        $table->integer('jumlah_jaminan')->nullable();
         $table->string('bukti_jaminan')->nullable();
     
         $table->integer('fee')->default(0);
         $table->integer('penalty')->default(0);
         $table->string('bukti_pengembalian')->nullable();
         $table->string('bukti_pembayaran')->nullable();
+
+        $table->integer('pengembalian_jaminan')->nullable();
     
         $table->timestamps();
         });

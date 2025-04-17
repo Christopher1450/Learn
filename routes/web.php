@@ -58,6 +58,8 @@ Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('das
     Route::get('/peminjaman/create', [BorrowingController::class, 'create'])->name('peminjaman.create');
     Route::post('/peminjaman/borrow/{buku}', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
     Route::post('/peminjaman/borrow', [BorrowingController::class, 'borrow'])->name('peminjaman.borrow');
+    // Route::post('/peminjaman/store', [BorrowingController::class, 'store'])->name('peminjaman.store');
+
     Route::post('/peminjaman/return/{borrowing}', [BorrowingController::class, 'return'])->name('peminjaman.return');
     Route::delete('/peminjaman/{id}', [BorrowingController::class, 'destroy'])->name('peminjaman.destroy');
 Route::get('/peminjaman/{id}/edit', [BorrowingController::class, 'edit'])->name('peminjaman.edit');

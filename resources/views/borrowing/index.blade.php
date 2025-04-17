@@ -35,6 +35,7 @@
                 <th>Jumlah Jaminan</th>
                 <th>Bukti Dikembalikan</th>
                 <th>Bukti Bayar</th>
+                <th>Pengembalian_jaminan</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -75,7 +76,7 @@
             <!-- <td>{{ $borrowing->jumlah_jaminan }}</td> -->
             <td>
                 @if ($borrowing->jenis_jaminan == 'uang')
-                    Rp {{ number_format($borrowing->nilai_jaminan, 0, ',', '.') }}
+                    Rp {{ number_format($borrowing->jumlah_jaminan, 0, ',', '.') }}
                 @else
                     {{ $borrowing->nilai_jaminan }}
                 @endif
@@ -95,6 +96,22 @@
                     class="btn btn-info btn-sm w-100">⬇️ Bukti Pembayaran</a>
                 @else
                     -
+                @endif
+            </td>
+            <td class="align-top">
+                @if ($borrowing->returned_at)
+                    @if ($borrowing->jenis_jaminan === 'uang')
+                        <div class="text-success fw-bold">
+                            Uang Dikembalikan:<br>
+                            Rp {{ number_format($borrowing->pengembalian_jaminan ?? 0, 0, ',', '.') }}
+                        </div>
+                    @elseif ($borrowing->jenis_jaminan === 'barang' && $borrowing->bukti_jaminan)
+                        <a href="{{ asset('storage/' . $borrowing->bukti_jaminan) }}" target="_blank" class="btn btn-info btn-sm w-100">
+                            ⬇️ Lihat Bukti Barang
+                        </a>
+                    @endif
+                @else
+                    <span>-</span>
                 @endif
             </td>
 

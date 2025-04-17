@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Borrowing extends Model
 {
@@ -16,21 +17,24 @@ class Borrowing extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id_borrowing',
-        'kode_unit',
         'id',
         'id_buku',
+        'kode_unit',
         'borrower_name',
-        'borrower_dob',
-        'borrow_date',
         'borrower_id',
+        'borrow_date',
         'return_date',
-        'returned_at',
-        'fee',
-        'penalty',
+        'jenis_jaminan',
+        'jumlah_jaminan',
+        'bukti_jaminan',
         'bukti_pengembalian',
         'bukti_pembayaran',
+        'fee',
+        'penalty',
+        'pengembalian_jaminan',
     ];
+    
+    
     
 
     public function buku()
@@ -46,7 +50,39 @@ class Borrowing extends Model
     {
         return $this->hasOne(Borrowing::class, 'kode_unit', 'kode_unit');
     }
-    
+    public function hitungFee()
+{
+    return Carbon::parse($this->borrow_date)->diffInDays($this->returned_at ?? now()) * 10000;
+}
+
+public function hitungDenda()
+{
+    $selisih = Carbon::parse($this->return_date)->diffInDays($this->returned_at ?? now(), false);
+    return $selisih > 0 ? $selisih * 5000 : 0;
+}
+
+public function hitungUangKembali()
+{
+    if ($this->jenis_jaminan !== 'uang') return 0;
+
+    $total = $this->hitungFee() + $this->hitungDenda();
+    return max(0, $this->jumlah_jaminan - $total);
+}
+
+    public function hitungPengembalianJaminan()
+    {
+        if ($this->jenis_jaminan !== 'uang') {
+            return 0;
+        }
+
+        $fee = $this->fee ?? 0;
+        $penalty = $this->penalty ?? 0;
+        $totalPotongan = $fee + $penalty;
+        $sisa = $this->jumlah_jaminan - $totalPotongan;
+
+        return max($sisa, 0);
+    }
+
 
     // problem
     public function borrower()
