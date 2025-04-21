@@ -15,6 +15,8 @@ class BookUnit extends Model
         'kode_unit',
         'id_buku',
         'status',
+        'barcode_path',
+        'qr_path',
     ];
 
     public function buku()

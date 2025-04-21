@@ -20,6 +20,7 @@ use App\Models\BookUnit;
 use App\Http\Controllers\BookUnitController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\API\BookSearchController;
 
 //Home
 Route::get('/', function () {
@@ -115,3 +116,17 @@ Route::post('/category', [CategoryController::class, 'store'])->name('category.s
 Route::delete('/category/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
 Route::get('/category/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
 Route::put('/category/{category}', [CategoryController::class, 'update'])->name('category.update');
+
+
+Route::get('/api/cari-buku-by-kode/{kode}', [BukuController::class, 'cariByKode']);
+Route::get('/api/cari-buku-by-kode/{kode}', function ($kode) {
+    $unit = BookUnit::with('buku.categories')->where('kode_unit', $kode)->first();
+    if (!$unit) return response()->json(null);
+
+    return response()->json([
+        'id_buku' => $unit->buku->id_buku,
+        'judul_buku' => $unit->buku->judul_buku,
+        'kategori' => $unit->buku->categories->pluck('name')->implode(', '),
+        'status' => $unit->status,
+    ]);
+})->name('cari-buku-by-kode');

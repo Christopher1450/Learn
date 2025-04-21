@@ -36,6 +36,8 @@
                                 <th>Buku</th>
                                 <th>Nama Peminjam</th>
                                 <th>Kode Unit</th>
+                                <th>Barcode</th>
+                                <th>QR Code</th>
                                 <th>Tanggal Pinjam</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -47,6 +49,21 @@
                                 <td>{{ $buku->judul_buku }}</td>
                                 <td>{{ $unit->borrowing->borrower_name ?? '-' }}</td>
                                 <td>{{ $unit->kode_unit }}</td>
+                                <td>
+                                    @if ($unit->barcode_path)
+                                        <img src="{{ asset('storage/' . $unit->barcode_path) }}" width="50" alt="Barcode {{ $unit->kode_unit }}">
+                                    @else
+                                        <span class="text-muted">Tidak tersedia</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($unit->qr_path)
+                                    <img src="{{ asset('storage/' . $unit->qr_path) }}" width="50" alt="QR {{ $unit->kode_unit }}">
+                                    @else
+                                        <span class="text-muted">Tidak tersedia</span>
+                                    @endif
+                                </td>
+
                                 <td>{{ $unit->borrowing->borrow_date ?? '-' }}</td>
                                 <td>
                                     @if ($unit->borrowing && !$unit->borrowing->returned_at)
@@ -69,7 +86,7 @@
                                 @endif
                                 </td>
                             </tr>
-                            @endforeach
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->string('id_buku');
             $table->string('status')->default('available'); // available | borrowed | lost
             $table->string('barcode_path')->nullable();
+            $table->string('qr_path')->nullable();
 
 
             $table->foreign('id_buku')->references('id_buku')->on('buku')->onDelete('cascade');

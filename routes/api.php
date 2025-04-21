@@ -7,6 +7,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\AnggotaController;
 use Illuminate\Http\Request;
+use App\Models\BookUnit;
+
 
 // Route::apiResource('books', BookController::class);
 Route::apiResource('categories', CategoryController::class);
@@ -23,3 +25,14 @@ Route::apiResource('anggota', AnggotaController::class);
 //         return $request->user();
 //     });
 // });
+Route::get('/cari-buku-by-kode/{kode_unit}', function ($kode_unit) {
+    $unit = BookUnit::with('buku.categories')->where('kode_unit', $kode_unit)->first();
+    if (!$unit) return response()->json(null);
+
+    return response()->json([
+        'id_buku' => $unit->buku->id_buku,
+        'judul_buku' => $unit->buku->judul_buku,
+        'kategori' => $unit->buku->categories->pluck('name')->implode(', '),
+        'status' => $unit->status,
+    ]);
+});

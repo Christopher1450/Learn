@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Buku, Category, BookUnit};
+use App\Models\{Buku, Category, BookUnit, Borrowing, Borrower};
 use Illuminate\Support\Str;
 use Milon\Barcode\DNS1D;
+use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
 
 class BukuController extends Controller
 {
@@ -42,9 +45,6 @@ class BukuController extends Controller
             'category_id.*' => 'exists:categories,id',
             'stock' => 'required|integer|min:1',
             'nilai_jaminan' => 'required|string|max:255',
-        ], [
-            'category_id.required' => 'Pilih setidaknya satu kategori.',
-            'category_id.*.exists' => 'Kategori yang dipilih tidak valid.',
         ]);
 
         $judul = $request->judul_buku;
@@ -52,8 +52,7 @@ class BukuController extends Controller
         $jumlahPrefix = Buku::where('kode_unit', 'LIKE', $prefix . '%')->count() + 1;
         $kodeBuku = $prefix . str_pad($jumlahPrefix, 5, '0', STR_PAD_LEFT);
 
-        $rawJaminan = $request->nilai_jaminan;
-        $cleanJaminan = preg_replace('/[^\d]/', '', $rawJaminan);
+        $cleanJaminan = preg_replace('/[^\d]/', '', $request->nilai_jaminan);
 
         $buku = Buku::create([
             'kode_unit' => $kodeBuku,
@@ -66,22 +65,29 @@ class BukuController extends Controller
             'status' => 'available'
         ]);
 
+        $buku->categories()->attach($request->category_id);
+
         $barcode = new DNS1D();
         $barcode->setStorPath(public_path('barcodes'));
 
         for ($i = 0; $i < $request->stock; $i++) {
             $kodeUnit = Str::upper(Str::random(8));
-            $barcodeImage = $barcode->getBarcodePNGPath($kodeUnit, 'C39');
+
+            $barcodeImage = $barcode->getBarcodePNGPath($kodeUnit, 'C128', 2, 80);
+            $barcodePath = $barcodeImage ? 'barcodes/' . basename($barcodeImage) : null;
+
+            $qrSvg = QrCode::format('svg')->size(300)->generate($kodeUnit);
+            $qrPath = "qr_codes/{$kodeUnit}.svg";
+            Storage::disk('public')->put($qrPath, $qrSvg);
 
             BookUnit::create([
                 'id_buku' => $buku->id_buku,
                 'kode_unit' => $kodeUnit,
                 'status' => 'available',
-                'barcode_path' => 'barcodes/' . basename($barcodeImage)
+                'barcode_path' => $barcodePath,
+                'qr_path' => $qrPath,
             ]);
         }
-
-        $buku->categories()->sync($request->category_id);
 
         return redirect()->route('dashboard')->with('success', 'Buku berhasil ditambahkan.');
     }
@@ -100,13 +106,20 @@ class BukuController extends Controller
 
         for ($i = 0; $i < $jumlah; $i++) {
             $kodeUnit = Str::upper(Str::random(8));
+
             $barcodeImage = $barcode->getBarcodePNGPath($kodeUnit, 'C39');
+            $barcodePath = $barcodeImage ? 'barcodes/' . basename($barcodeImage) : null;
+
+            $qrImage = QrCode::format('svg')->size(300)->generate($kodeUnit);
+            $qrPath = 'qr_codes/' . $kodeUnit . '.svg';
+            Storage::disk('public')->put($qrPath, $qrImage);
 
             BookUnit::create([
                 'id_buku' => $buku->id_buku,
                 'kode_unit' => $kodeUnit,
                 'status' => 'available',
-                'barcode_path' => 'barcodes/' . basename($barcodeImage)
+                'barcode_path' => $barcodePath,
+                'qr_path' => $qrPath,
             ]);
         }
 

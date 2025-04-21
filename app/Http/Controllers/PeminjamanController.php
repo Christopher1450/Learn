@@ -17,7 +17,7 @@ class PeminjamanController extends Controller
             return Peminjaman::with('buku')->where('sid', Auth::id())->get();
         }
 
-        $peminjaman = Peminjaman::with('buku', 'user')->paginate(10);
+        $peminjaman = Peminjaman::with('buku', 'user')->paginate(100);
         return view('peminjaman.index', compact('peminjaman'));
     }
 
