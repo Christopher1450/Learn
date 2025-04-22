@@ -1,4 +1,8 @@
 body {
+    background-image: url('/storage/wallpaper.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-color: #f8f9fa;
     font-family: 'Arial', sans-serif;
     display: flex;

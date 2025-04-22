@@ -90,13 +90,13 @@
     <!-- scanner QR -->
     <div class="d-flex justify-content-center gap-5 align-items-center my-3 flex-wrap">
 
-    <div class="d-flex align-items-center gap-2">
+    <!-- <div class="d-flex align-items-center gap-2">
         <label class="form-label fw-semibold mb-0">Scan QR</label>
         <label class="switch">
             <input type="checkbox" id="toggle-qr" onchange="toggleScannerSwitch('qr')">
             <span class="slider round"></span>
         </label>
-    </div>
+    </div> -->
 
     <div class="d-flex align-items-center gap-2">
         <label class="form-label fw-semibold mb-0">Scan Barcode</label>
