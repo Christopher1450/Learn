@@ -132,39 +132,41 @@ class BorrowingController extends Controller
             'date_of_birth' => $request->borrower_dob,
         ]);
 
-        $borrowing = new Borrowing();
-        $borrowing->id = auth()->id();
-        $borrowing->id_buku = $buku->id_buku;
-        $borrowing->kode_unit = $unit->kode_unit;
-        $borrowing->borrower_name = $borrower->name;
-        $borrowing->borrower_id = $borrower->id;
-        $borrowing->borrow_date = now();
-        $borrowing->return_date = now()->addDays(7);
-        $borrowing->jenis_jaminan = $request->jenis_jaminan;
+        $jumlah_jaminan = null;
+        $bukti_jaminan = null;
 
         if ($request->jenis_jaminan === 'uang') {
-            $clean = preg_replace('/[^\d]/', '', $request->nilai_jaminan);
-            $borrowing->jumlah_jaminan = (int) $clean;
-        }
-
-        if ($request->jenis_jaminan === 'barang') {
+            $clean = preg_replace('/[^\d]/', '', $request->nilai_jaminan ?? $buku->nilai_jaminan);
+            $jumlah_jaminan = (int) $clean;
+        } elseif ($request->hasFile('bukti_jaminan')) {
             $file = $request->file('bukti_jaminan');
-            $path = $file->storeAs('jaminan_barang', uniqid().'_'.$file->getClientOriginalName(), 'public');
-            $borrowing->bukti_jaminan = $path;
+            $bukti_jaminan = $file->storeAs('jaminan_barang', uniqid().'_'.$file->getClientOriginalName(), 'public');
         }
 
-        $borrowing->save();
+        Borrowing::create([
+            'id' => auth()->id(),
+            'id_buku' => $buku->id_buku,
+            'kode_unit' => $unit->kode_unit,
+            'borrower_name' => $borrower->name,
+            'borrower_id' => $borrower->id,
+            'borrow_date' => now(),
+            'return_date' => now()->addDays(7),
+            'jenis_jaminan' => $request->jenis_jaminan,
+            'jumlah_jaminan' => $jumlah_jaminan,
+            'bukti_jaminan' => $bukti_jaminan,
+            'bukti_pengembalian' => '',
+            'bukti_pembayaran' => '',
+        ]);
 
         $unit->update(['status' => 'borrowed']);
         $buku->decrement('stock');
-
         if ($buku->stock <= 0) {
-            $buku->status = 'unavailable';
-            $buku->save();
+            $buku->update(['status' => 'unavailable']);
         }
 
         return redirect()->route('peminjaman.index')->with('success', 'Buku berhasil dipinjam.');
     }
+
 
     public function uploadBukti(Request $request)
     {
@@ -217,6 +219,13 @@ class BorrowingController extends Controller
             $borrowing->unit->status = 'available';
             $borrowing->unit->save();
         }
+        if ($borrowing->jenis_jaminan === 'uang') {
+            $sisaUang = $borrowing->jumlah_jaminan - ($borrowing->fee + $borrowing->penalty);
+            $borrowing->pengembalian_jaminan = $sisaUang > 0 ? $sisaUang : 0;
+        } elseif ($borrowing->jenis_jaminan === 'barang') {
+            $borrowing->pengembalian_jaminan = 0; // barang tidak dipotong
+        }
+        
 
         $borrowing->buku->increment('stock');
         $borrowing->save();
